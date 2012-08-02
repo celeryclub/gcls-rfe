@@ -1,0 +1,32 @@
+h1.title Page List
+
+ul.table[data-sortable="{ url: '/admin/pages/sort', itemCss: 'li.item' }"]
+  li: ul.tr
+    li.td Title
+    li.td Description
+    li.td Body
+    li.td
+    li.td
+  - @pages.each do |page|
+    li.item[id="item_#{page.id}"]: ul.tr
+      li.td = page.title
+      li.td == truncate(page.description, 5)
+      li.td == truncate(page.body, 5)
+      li.td: a.btn[href="/admin/pages/#{page.id}"] Detail
+      li.td: a.btn[href="/admin/pages/#{page.id}/edit"] Edit
+
+/ / ul.sortable[data-sortable="{itemCss:'li.item', handleCss: 'div.handle'}"]
+/ .sortable[data-sortable="{itemCss:'p'}"]
+/   p Item #1
+/   p Item #2
+/   p Item #3
+/   p Item #4
+/   p Item #5
+
+/ / ul.sortable[data-sortable=""]
+/ ul.sortable[data-sortable="{itemCss:'li.item'}"]
+/   li.item Item #1
+/   li.item Item #2
+/   li Item #3
+/   li.item Item #4
+/   li.item Item #5

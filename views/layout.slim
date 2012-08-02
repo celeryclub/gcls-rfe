@@ -1,0 +1,48 @@
+doctype html
+html
+  head
+    title #{get_title} - Recipe for Financial Empowerment
+    link[rel='stylesheet' href='/css/normalize.css']
+    link[rel='stylesheet' href='/css/screen.css']
+    / link[rel='shortcut icon' href='/favicon.png']
+    script[src='/js/html5shiv.js']
+    script[src='//use.typekit.net/cay7bya.js']
+    javascript:
+      try{Typekit.load();}catch(e){}
+  body
+    .wrapper
+      header.cf
+        .logo: a[href='/'] Stephen Davis
+      #main.cf
+        .primary: .primary-inner[class=page_class] == yield
+        .secondary.cf
+          nav.main: ul
+            - @pages.each do |page|
+              li[class="#{nav_class(page.slug)}"]: a[href==page.path]
+                = page.title
+                span.description = page.description
+          / .social
+          /   h3.widget-title On the internet
+          /   ul
+          /     li: a[href='http://twitter.com/stephendavis89/'] Twitter
+          /     li: a[href='http://github.com/stephendavis89'] GitHub
+          /     li: a[href='http://www.rdio.com/people/stephendavis89/'] Rdio
+      footer
+        .thanks
+          .thanks-inner
+            a.friends[href='http://www.greenvillelibrary.org/index.php/Friends-of-the-Library/']: img[src='/img/friends-logo.png']
+            a.fdic[href='http://www.fdic.gov/']: img[src='/img/fdic-logo.png']
+            a.rotary[href='http://www.rotary.org/']: img[src='/img/rotary-logo.png']
+            a.smart-investing[href='http://smartinvesting.ala.org/']: img[src='/img/smart-investing-logo.png']
+            a.ala[href='http://www.ala.org/']: img[src='/img/ala-logo.png']
+            a.finra[href='http://www.finra.org/']: img[src='/img/finra-logo.png']
+        .colophon
+          .colophon-inner.cf
+            p This website is made possible by a grant from the FINRA Investor Education Foundation through Smart investing@your library®, a partnership with the American Library Association.
+            p.copyright
+              ' Copyright #{Time.now.strftime('%Y')}
+              a[href='http://www.greenvillelibrary.org/'] Greenville Library System
+              ' . All rights reserved.
+            p.credits
+              ' Website by
+              a[href='http://www.j4studios.com/'] J4 Studios

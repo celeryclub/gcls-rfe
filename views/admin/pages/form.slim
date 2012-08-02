@@ -1,0 +1,20 @@
+h1.title Edit Page
+
+- unless @page.errors.empty?
+  div.errors
+    strong There were errors.
+    ul
+      - @page.errors.full_messages.each do |message|
+        li = message
+
+form[action="/admin/pages/#{@page.id}" method='POST']
+  .input.text
+    input[type='text' name='page[title]' placeholder='Title' value="#{@page.title}"]
+  .input.text
+    input[type='text' name='page[description]' placeholder='Description' value="#{@page.description}"]
+  .input.textarea
+    textarea[name='page[body]' placeholder='Body'] = @page.body
+  input[type='hidden' name='_method' value='PATCH']
+  button.btn.btn-primary[type='submit'] Update
+  a.btn[href="/admin/pages/#{@page.id}"] View
+  a.btn[href="/admin/pages"] Back to list
