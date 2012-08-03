@@ -1,9 +1,18 @@
 h1.title = @page.title
 p = @page.body
 
-ul.links
-  - @page.links.each do |link|
-    li.link: a[href=link.url target='_blank'] = link.text
+- if @page.sections.any?
+  .sections
+    - @page.sections.each do |section|
+      h2.subtitle = section.title
+      - if section.links.any?
+        == slim :link_set, :layout => false, :locals => { :links => section.links }
+        / - section.links.each do |link|
+          / p = link.text
+- else
+  - if @page.links.any?
+    == slim :link_set, :layout => false, :locals => { :links => @page.links }
+
 
 / ul.categories
 /   li.category

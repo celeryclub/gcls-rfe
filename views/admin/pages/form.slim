@@ -15,5 +15,6 @@ form[action="/admin/pages/#{@page.id}" method='POST']
   .input.textarea
     textarea[name='page[body]' placeholder='Body'] = @page.body
   input[type='hidden' name='_method' value='PATCH']
-  button.btn.btn-primary[type='submit'] Update
-  a.btn[href="/admin/pages"] Back to list
+  .controls
+    button.btn.btn-primary[type='submit'] Update
+    a.btn[href="/admin/pages"] Back to list

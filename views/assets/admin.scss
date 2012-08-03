@@ -8,12 +8,13 @@ $black: #222;
 // $medium_yellow: #ffebc5;
 
 $blue: #0066BB;
-$darkblue: darken($blue, 15%);
-$lightblue: lighten($blue, 15%);
+$dark_blue: darken($blue, 15%);
+$light_blue: lighten($blue, 15%);
+$sky_blue: lighten($blue, 50%);
 
 $red: #B10;
-$darkred: darken($red, 10%);
-$lightred: lighten($red, 10%);
+$dark_red: darken($red, 10%);
+$light_red: lighten($red, 10%);
 
 $red: #CB0010;
 // // $teal: #389C96;
@@ -32,13 +33,14 @@ body {
 // h1, h2, h3, h4 {
 	// font-family: "museo-slab", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
 // }
-// h1, h2, h3, h4 {
+h1, h2, h3, h4 {
 //   font-weight: 400;
 //   color: $teal;
+margin-top: 0;
 //   line-height: 1em;
 //   margin: .5em 0 0;
 //   // background:red;
-// }
+}
 // // h1, h2, h3, h4,
 // // h1 a, h2 a, h3 a, h4 a { color: $blue; }
 // // .logo,
@@ -47,11 +49,15 @@ body {
 // //   font-family: "Crete Round", serif;
 // //   clear: left;
 // // }
-// // h2, h3, h4 { margin: 1em 0 .2em; }
+h2, h3, h4 {
+  // margin: 1em 0 .2em;
+  // margin: 0;
+  margin-bottom: .5em;
+}
 // h1 {
 //   font-size: 28px;
 
-// //   margin: 0;
+  // margin: 0;
 // }
 h2 {
   // font-size: 32px;
@@ -69,10 +75,12 @@ h3 {
 // // }
 // // blockquote,
 // p { margin: .6em 0; }
-// // ol, ul {
-// //   margin: .6em 0;
-// //   padding: 0 0 0 2em;
-// // }
+ul {
+  margin: 0;
+  // margin: .6em 0;
+  // padding: 0 0 0 2em;
+  padding-left: 2em;
+}
 // ul ul,
 // ul ol,
 // ol ol,
@@ -106,7 +114,7 @@ h3 {
 // // a {
 // //   // padding: 0 .1em;
 // //   // margin: 0 -.1em;
-// //   color: $darkblue;
+// //   color: $dark_blue;
 // //   text-decoration: none;
 // //   outline: none;
 // //   &:hover {
@@ -262,9 +270,10 @@ h3 {
 //   // }
 // }
 
-// // Footer
-// // --------------------------------
-// footer {
+// Footer
+// --------------------------------
+footer {
+  text-align: right;
 // 	color: $white;
 // 	a {
 // 		color: $medium_yellow;
@@ -303,49 +312,89 @@ h3 {
 //   		text-align: right
 //   	}
 // 	}
-// }
+}
 
-// Table
+// Main stuuf
 // --------------------------------
 .page {
-  border: 1px solid $red;
-  padding: 5px;
+  border-left: 2px solid $red;
+  // border-width: 1px 1px;
+  // border-collapse: collapse;
+  padding: 5px 5px 0;
+  // padding-bottom: 10px;
+  margin-bottom: 10px;
+  // background-color: blue;
 }
-table {
-//   display: table;
-//   list-style: none;
-width: 100%;
+.section {
+  // padding-left: 1em;
+  padding: 5px 5px 0;
+  border-left: 2px solid $blue;
+  margin-bottom: 10px;
+  // padding-bottom: 10px;
+  margin-left: 10px;
 }
-tr {}
-th, td {
-  padding: 2px;
-  vertical-align: top;
-  width: auto;
-  border-bottom: 1px dashed #BBB;
+.subtitle,
+li {
+  .btn {
+    margin-left: .5em;
+    vertical-align: middle;
+  }
 }
-th {
-  text-align: left;
-  border-style: solid;
-}
+// .subtitle {
+//   span.handle {
+//     display: block;
+//     float: left;
+//   }
+// }
+
+// Sortable
+// --------------------------------
+
+// table {
+// //   display: table;
+// //   list-style: none;
+// width: 100%;
+// }
+// tr {}
+// th, td {
+//   padding: 2px;
+//   vertical-align: top;
+//   width: auto;
+//   border-bottom: 1px dashed #BBB;
+// }
+// th {
+//   text-align: left;
+//   border-style: solid;
+// }
 // td {}
-.sortable tr {
+// .sortable tr
+.sortable li {
   
 //   display: table-row;
 //   // display: block;
 //   // list-style: none;
-  .handle {
-    cursor: move;
-  }
+  
     // &.control {
       // width: 10%;
     // }
   // }
+}
+.handle {
+  display: inline-block;
+  cursor: move;
   &:hover {
-    background: #DDD;
+    // background: #DDD;
+    color: $black;
+    background: $sky_blue;
   }
 }
 .controls {
-  margin-top: 2em;
+  padding-top: 1em;
+  // display: inline-block;
+  float: left;
+  .btn {
+    margin-right: .5em;
+  }
 }
 // .sortable .handle {
 //   cursor: move;
@@ -362,6 +411,10 @@ th {
 
 // Form
 // --------------------------------
+form.delete {
+  display: inline;
+  // background-color:red;
+}
 .input {
   margin-bottom: 1em;
 }
@@ -400,11 +453,14 @@ textarea {
 .btn {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   position: relative;
+  width: auto;
   display: inline-block;
   text-decoration: none;
   overflow: visible;
-  padding: 5px 10px;
-  // font-weight: bold;
+  padding: 4px 10px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 400;
   line-height: 18px;
   color: #333;
   text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
@@ -413,12 +469,17 @@ textarea {
   border-radius: 4px;
   box-shadow: 0 1px 0 rgba(255, 255, 255, .5);
   background: -webkit-linear-gradient($white, darken($white, 15%));
-  float: left;
-  margin-right: 0.5em;
+  // float: left;
+  // margin-right: .5em;
   &:hover {
     color: #333;
     background: -webkit-linear-gradient(darken($white, 5%), darken($white, 20%));
   }
+}
+.btn-mini {
+  padding: 2px 6px;
+  font-size: 11px;
+  line-height: 14px;
 }
 .btn.btn-danger,
 .btn.btn-primary {
@@ -427,14 +488,14 @@ textarea {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
 }
 .btn.btn-primary {
-  background: -webkit-linear-gradient($lightblue, $blue);
-  border-color: $darkblue;
-  &:hover { background: -webkit-linear-gradient(darken($lightblue, 5%), darken($blue, 5%)); }
+  background: -webkit-linear-gradient($light_blue, $blue);
+  border-color: $dark_blue;
+  &:hover { background: -webkit-linear-gradient(darken($light_blue, 5%), darken($blue, 5%)); }
 }
 .btn.btn-danger {
-  background: -webkit-linear-gradient($lightred, $red);
-  border-color: $darkred;
-  &:hover { background: -webkit-linear-gradient(darken($lightred, 5%), darken($red, 5%)); }
+  background: -webkit-linear-gradient($light_red, $red);
+  border-color: $dark_red;
+  &:hover { background: -webkit-linear-gradient(darken($light_red, 5%), darken($red, 5%)); }
 }
 
 // Utility

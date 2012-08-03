@@ -1,13 +1,18 @@
-- if new_record
-  h1.title New Link
-- else
+- if @link.id
   h1.title Edit Link
+- else
+  h1.title New Link
 
 / p = new_resource
 
+/ p:strong link
 p = @link.inspect
-p: strong Existing record?
-p = @link.id ? 'Yes' : 'No'
+/ p:strong link url
+/ p = @link.url && @link.url.empty?
+/ p:strong link section
+/ p = @link.section_id.class
+/ p: strong Existing record?
+/ p = @link.id ? 'Yes' : 'No'
 
 - if @link.errors.any?
   div.errors
@@ -19,7 +24,7 @@ p = @link.id ? 'Yes' : 'No'
 / p: strong = @link.page_id
 
 / form[action="/admin/links/#{@link.id}" method='POST']
-form[action=="#{new_record ? '/admin/links' : '/admin/links/' + @link.id.to_s}" method='POST']
+form[action=="#{@link.id ? '/admin/links/' + @link.id.to_s : '/admin/links'}" method='POST']
   .input.text
     input[type='text' name='link[text]' placeholder='Text' value="#{@link.text}"]
   .input.text
@@ -28,7 +33,7 @@ form[action=="#{new_record ? '/admin/links' : '/admin/links/' + @link.id.to_s}" 
     label[for='page_id'] Page 
     select[name='link[page_id]' id='page_id']
       option[value=''] Select a page
-      - Page.all.each do |page|
+      - Page.all(:order => [:position.asc]).each do |page|
         - if page.id == @link.page_id
           option[value=page.id selected] = page.title
         - else
@@ -37,16 +42,18 @@ form[action=="#{new_record ? '/admin/links' : '/admin/links/' + @link.id.to_s}" 
     label[for='section_id'] Section 
     select[name='link[section_id]' id='section_id']
       option[value=''] Select a section
-      - Section.all.each do |section|
+      - Section.all(:order => [:position.asc]).each do |section|
         - if @link.section_id && section.id == @link.section_id
           option[value=section.id selected] = section.title
         - else
           option[value=section.id] = section.title
-  - unless new_record
+  - if @link.id
     input[type='hidden' name='_method' value='PATCH']
-  button.btn.btn-primary[type='submit'] = new_record ? 'Create' : 'Update'
-  a.btn[href="/admin/links"] Back to list
-/ - unless new_record
-/   form.destroy[action="/admin/links/#{@link.id}" method='POST']
-/     input[type='hidden' name='_method' value='DELETE']
-/     input.btn.btn-danger[type='submit' value='Delete']
+  .controls
+    button.btn.btn-primary[type='submit'] = @link.id ? 'Update' : 'Create'
+- if @link.id
+  .controls
+    form.delete[action="/admin/links/#{@link.id}" method='POST']
+      input[type='hidden' name='_method' value='DELETE']
+      button.btn.btn-danger[type='submit'] Delete
+    a.btn[href==url('/admin/links')] Back to list

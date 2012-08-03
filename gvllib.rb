@@ -28,44 +28,57 @@ class Page
   include DataMapper::Resource
   property :id, Serial
   property :title, String, :required => true #, :unique => true
-  property :slug, String, :default => lambda { |r,p| r.slugize }
+  property :slug, String #, :default => lambda { |r,p| r.slugize }
   property :description, String, :length => 255
   # property :description, Text
   property :body, Text, :required => true
   property :position, Integer
-  
-  def slugize; self.title.downcase.gsub(/\W/,'-').squeeze('-').chomp('-') end
-  def path; "/#{self.slug}" end
 
   has n, :sections, :order => [:position.asc]
   has n, :links, :order => [:position.asc]
+  
+  # def slugize; self.title.downcase.gsub(/\W/,'-').squeeze('-').chomp('-') end
+  def path; "/#{self.slug}" end
 end
 
 class Section
   include DataMapper::Resource
   property :id, Serial
   property :title, String, :required => true
-  property :slug, String, :default => lambda { |r,p| r.slugize }
   property :position, Integer, :default => lambda { |r,p| r.next_position }
-
-  def slugize; self.title.downcase.gsub(/\W/,'-').squeeze('-').chomp('-') end
-  def next_position; (last = Section.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1 end
 
   has n, :links, :order => [:position.asc]
   belongs_to :page
+
+  def next_position; (last = Section.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1 end
 end
 
 class Link
   include DataMapper::Resource
   property :id, Serial
-  property :text, String, :length => 255, :required => true
+  property :text, String, :length => 255 #, :required => true
   property :url, String, :length => 255, :required => true
   property :position, Integer, :default => lambda { |r,p| r.next_position }
 
-  def next_position; (last = Link.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1 end
-
   belongs_to :page
   belongs_to :section, :required => false
+
+  before :valid?, :fix_associations
+
+  def text_or_url; (self.text && !self.text.empty?) ? self.text : self.url  end
+  def next_position; (last = Link.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1 end
+  def fix_associations
+    # self.url = self.url.empty? ? 'howser.biz' : self.url
+    # self.section_id = self.section_id.to_i
+    # self.section_id = self.section_id.class == String ? nil : self.section_id
+    if self.section_id.class == String
+      self.section_id = nil
+    end
+    if self.page_id.class == String
+      self.page_id = nil
+    end
+    # [self.page_id, self.section_id].each { |property| if property.class == String then property = nil end }
+  end
 end
 
 DataMapper.finalize
@@ -123,15 +136,15 @@ end
 
 get '/admin' do
   protected!
-  # @page = Page.first(:slug => 'home')
+  @pages = Page.all(:order => [:position.asc])
   slim :'admin/index', :layout => :'admin/layout'
 end
-get '/admin/pages' do
-  protected!
-  # @pages = Page.all(:fields => [:id, :title, :description, :body], :order => [:position.asc])
-  @pages = Page.all(:order => [:position.asc])
-  slim :'admin/pages/index', :layout => :'admin/layout'
-end
+# get '/admin/pages' do
+#   protected!
+#   # @pages = Page.all(:fields => [:id, :title, :description, :body], :order => [:position.asc])
+#   @pages = Page.all(:order => [:position.asc])
+#   slim :'admin/pages/index', :layout => :'admin/layout'
+# end
 # get '/admin/pages/:id' do
 #   protected!
 #   @page = Page.get(params[:id])
@@ -167,46 +180,88 @@ put '/admin/pages/sort' do
   ''
   # params[:page].inspect
 end
-get '/admin/links' do
+get '/admin/sections/new' do
   protected!
-  # @links = Link.all(:order => [:position.asc])
-  @pages = Page.all(:order => [:position.asc])
-  slim :'admin/links/index', :layout => :'admin/layout'
+  @section = Section.new
+  slim :'admin/sections/form', :layout => :'admin/layout'
 end
+post '/admin/sections' do
+  protected!
+  @section = Section.new(params[:section])
+  if @section.save
+    redirect to('/admin')
+  else
+    slim :'admin/sections/form', :layout => :'admin/layout'
+  end
+end
+get '/admin/sections/:id/edit' do
+  protected!
+  @section = Section.get(params[:id])
+  slim :'admin/sections/form', :layout => :'admin/layout'
+end
+patch '/admin/sections/:id' do
+  protected!
+  @section = Section.get(params[:id])
+  @section.attributes = params[:section]
+  if @section.save
+    redirect to('/admin')
+  else
+    slim :'admin/sections/form', :layout => :'admin/layout'
+  end
+end
+delete '/admin/sections/:id' do
+  protected!
+  Section.get(params[:id]).destroy
+  # redirect to('/admin')
+  "section #{params[:id]} deleted"
+end
+put '/admin/sections/sort' do
+  protected!
+  params[:section].each_with_index do |id, i|
+    Section.get(id).update(:position => i+1)
+  end
+  ''
+end
+# get '/admin/links' do
+#   protected!
+#   # @links = Link.all(:order => [:position.asc])
+#   @pages = Page.all(:order => [:position.asc])
+#   slim :'admin/links/index', :layout => :'admin/layout'
+# end
 get '/admin/links/new' do
   protected!
   @link = Link.new
-  slim :'admin/links/form', :layout => :'admin/layout', :locals => { new_record: true }
+  slim :'admin/links/form', :layout => :'admin/layout' #, :locals => { new_record: true }
   # "Hello #{@link.inspect}"
 end
 post '/admin/links' do
   protected!
   @link = Link.new(params[:link])
   if @link.save
-    redirect to('/admin/links')
+    redirect to('/admin')
   else
-    slim :'admin/links/form', :layout => :'admin/layout', :locals => { new_record: true }
+    slim :'admin/links/form', :layout => :'admin/layout' #, :locals => { new_record: true }
   end
 end
 get '/admin/links/:id/edit' do
   protected!
   @link = Link.get(params[:id])
-  slim :'admin/links/form', :layout => :'admin/layout', :locals => { new_record: false }
+  slim :'admin/links/form', :layout => :'admin/layout' #, :locals => { new_record: false }
 end
 patch '/admin/links/:id' do
   protected!
   @link = Link.get(params[:id])
   @link.attributes = params[:link]
   if @link.save
-    redirect to('/admin/links')
+    redirect to('/admin')
   else
-    slim :'admin/links/form', :layout => :'admin/layout', :locals => { new_record: false }
+    slim :'admin/links/form', :layout => :'admin/layout' #, :locals => { new_record: false }
   end
 end
 delete '/admin/links/:id' do
   protected!
   Link.get(params[:id]).destroy
-  redirect to('/admin/links')
+  redirect to('/admin')
 end
 put '/admin/links/sort' do
   protected!

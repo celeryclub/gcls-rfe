@@ -14,19 +14,23 @@ html
       header.cf
         .logo: a[href='/'] Back to Site
       #main.cf
-        .primary
+        .primary.cf
           / p.notice = @notice
           == yield
         .secondary
-          nav.main: ul
+          nav.main.widget: ul
             li: a[href='/admin'] Dashboard
-            li: a[href='/admin/pages'] Pages
-            li: a[href='/admin/links'] Links & Sections
-      footer
-        p.credits
-          ' Website by
-          a[href='http://www.j4studios.com/'] J4 Studios
+            / li: a[href='/admin/pages'] Pages
+            / li: a[href='/admin/links'] Links & Sections
+          .widget
+            a.btn[href='/admin/sections/new'] New Section
+            a.btn[href='/admin/links/new'] New link
+      footer: p
+        ' Built by
+        a[href='http://www.j4studios.com/'] J4 Studios
     script[src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js']
+    javascript:
+      window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')
     script[src='/js/placeholder_polyfill.jquery.min.combo.js']
     script[src='/js/jquery-ui-1.8.22.custom.min.js']
     script[src='/js/admin.js']

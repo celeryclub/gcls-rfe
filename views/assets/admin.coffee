@@ -7,22 +7,24 @@ $ ->
   #   return ui;
 
   $('.sortable').disableSelection()
-  $('.sortable').on('mousedown', ->
-    $(this).find('td').each( -> $(this).width($(this).width()) )
-  )
+  # Table fix
+  # $('.sortable').on('mousedown', ->
+  #   $(this).find('td').each( -> $(this).width($(this).width()) )
+  #   # console.log $(this)
+  # )
   $('.sortable').sortable({
     # cursor: 'move'
     # helper: 'clone'
     # helper: 'fix_helper'
     # forceHelperSize: true
-    stop: (e, tr) ->
-      # console.log $(this)
-      $(this).find('td').each( -> $(this).width('auto') )
-      # tr.item.children().each( (i, td) ->
-        # Set helper cell sizes to match the original sizes
-        # $(this).width('')
-        # $(this).height(originals.eq(i).height())
-      # )
+    # stop: (e, tr) ->
+    #   # console.log $(this)
+    #   $(this).find('td').each( -> $(this).width('auto') )
+    #   # tr.item.children().each( (i, td) ->
+    #     # Set helper cell sizes to match the original sizes
+    #     # $(this).width('')
+    #     # $(this).height(originals.eq(i).height())
+    #   # )
     # helper: (e, ui) ->
     #   originals = ui.children()
     #   helper = ui.clone()
