@@ -1,20 +1,52 @@
-- unless @post.errors.empty?
+- if new_record
+  h1.title New Link
+- else
+  h1.title Edit Link
+
+/ p = new_resource
+
+p = @link.inspect
+p: strong Existing record?
+p = @link.id ? 'Yes' : 'No'
+
+- if @link.errors.any?
   div.errors
-    strong There were errors.
+    strong Errors
     ul
-      - @post.errors.full_messages.each do |message|
+      - @link.errors.full_messages.each do |message|
         li = message
 
-form[action=="#{new_record ? '/blog' : '/blog/' + @post.id.to_s}" method='POST']
-  input[type='text' name='post[title]' placeholder='title' value="#{@post.title}"]
-  input.datepicker[type='text' name='post[published]' placeholder='date' value="#{@post.published || Time.now.strftime('%Y-%m-%d')}"]
-  textarea[name='post[body]' placeholder='body'] = @post.body
+/ p: strong = @link.page_id
+
+/ form[action="/admin/links/#{@link.id}" method='POST']
+form[action=="#{new_record ? '/admin/links' : '/admin/links/' + @link.id.to_s}" method='POST']
+  .input.text
+    input[type='text' name='link[text]' placeholder='Text' value="#{@link.text}"]
+  .input.text
+    input[type='text' name='link[url]' placeholder='URL' value="#{@link.url}"]
+  .input.select
+    label[for='page_id'] Page 
+    select[name='link[page_id]' id='page_id']
+      option[value=''] Select a page
+      - Page.all.each do |page|
+        - if page.id == @link.page_id
+          option[value=page.id selected] = page.title
+        - else
+          option[value=page.id] = page.title
+  .input.select
+    label[for='section_id'] Section 
+    select[name='link[section_id]' id='section_id']
+      option[value=''] Select a section
+      - Section.all.each do |section|
+        - if @link.section_id && section.id == @link.section_id
+          option[value=section.id selected] = section.title
+        - else
+          option[value=section.id] = section.title
   - unless new_record
-    / input[type='text' name='post[slug]' placeholder='slug' value="#{@post.slug}"]
     input[type='hidden' name='_method' value='PATCH']
   button.btn.btn-primary[type='submit'] = new_record ? 'Create' : 'Update'
-- unless new_record
-  a.btn[href="/blog/#{@post.slug}"] View
-  form.destroy[action="/blog/#{@post.id}" method='POST']
-    input[type='hidden' name='_method' value='DELETE']
-    input.btn.btn-danger[type='submit' value='Delete']
+  a.btn[href="/admin/links"] Back to list
+/ - unless new_record
+/   form.destroy[action="/admin/links/#{@link.id}" method='POST']
+/     input[type='hidden' name='_method' value='DELETE']
+/     input.btn.btn-danger[type='submit' value='Delete']

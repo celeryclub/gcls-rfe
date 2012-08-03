@@ -1,0 +1,19 @@
+h1.title Link & Section List
+
+- @pages.each do |page|
+  .page
+    h2.subtitle = page.title
+    - if page.sections.any?
+      .sections
+        - page.sections.each do |section|
+          h3 = section.title
+          - if !section.links.empty?
+            == slim :'admin/links/link_set', :layout => false, :locals => { links: section.links }
+            / - section.links.each do |link|
+              / p = link.text
+    - else
+      - if page.links.any?
+        == slim :'admin/links/link_set', :layout => false, :locals => { links: page.links }
+
+.controls
+  a.btn[href='/admin/links/new'] New link

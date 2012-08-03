@@ -1,6 +1,7 @@
-// // Colors
-// // --------------------------------
+// Colors
+// --------------------------------
 $white: #FEFEFE;
+$black: #222;
 // $medium_grey: #999;
 // $dark_grey: #333;
 // $light_yellow: #FFF5D8;
@@ -23,7 +24,7 @@ $red: #CB0010;
 body {
 	// background: $light_yellow;
   // background: $white url("/img/light_wool.png") top center;
-  // color: $medium_grey;
+  color: $black;
   font-family: "museo", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
   font-size: 14px;
 }
@@ -52,14 +53,16 @@ body {
 
 // //   margin: 0;
 // }
-// // h2 {
-// //   font-size: 32px;
+h2 {
+  // font-size: 32px;
 // //   line-height: 1.1em;
-// // }
-// // h3 {
+  color: lighten($black, 25%);
+}
+h3 {
+  color: lighten($black, 50%);
 // //   font-size: 22px;
 // //   font-family: "PT Sans Narrow", Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
-// // }
+}
 // // h4 {
 // //   font-weight: 700;
 // //   font-size: 1em;
@@ -144,12 +147,12 @@ body {
 // 	background: red;
 // }
 .primary {
-  width: 75%;
+  width: 80%;
   float: right;
 }
 .secondary {
   float: left;
-  width: 25%;
+  width: 20%;
 }
 
 // Header
@@ -304,33 +307,72 @@ body {
 
 // Table
 // --------------------------------
-ul.table {
-  display: table;
-  list-style: none;
+.page {
+  border: 1px solid $red;
+  padding: 5px;
 }
-ul.tr {
-  cursor: move;
-  display: table-row;
-  // display: block;
-  // list-style: none;
+table {
+//   display: table;
+//   list-style: none;
+width: 100%;
+}
+tr {}
+th, td {
+  padding: 2px;
+  vertical-align: top;
+  width: auto;
+  border-bottom: 1px dashed #BBB;
+}
+th {
+  text-align: left;
+  border-style: solid;
+}
+// td {}
+.sortable tr {
+  
+//   display: table-row;
+//   // display: block;
+//   // list-style: none;
+  .handle {
+    cursor: move;
+  }
+    // &.control {
+      // width: 10%;
+    // }
+  // }
   &:hover {
     background: #DDD;
   }
 }
-li.td {
-  display: table-cell;
-  border: 1px solid #DDD;
+.controls {
+  margin-top: 2em;
 }
+// .sortable .handle {
+//   cursor: move;
+//   display: block;
+//   padding: 0 4px;
+//   font-size: 16px;
+//   color: #BBB;
+//   background-color: red;
+// }
+// li.td {
+//   display: table-cell;
+//   border: 1px solid #DDD;
+// }
 
 // Form
 // --------------------------------
+.input {
+  margin-bottom: 1em;
+}
+// label { display: block; }
 input,
 textarea,
 .btn { font-size: 13px; }
 input,
 textarea {
   display: block;
-  margin-bottom: 1em;
+  // margin-bottom: 1em;
   line-height: 18px;
   outline: none;
   border: 1px solid #CCC;
@@ -356,6 +398,7 @@ textarea {
   height: 5em;
 }
 .btn {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   position: relative;
   display: inline-block;
   text-decoration: none;

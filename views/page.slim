@@ -1,50 +1,49 @@
-/ - set_title(@page.title)
-/ - @title = @page.title
-/ p = page_class.inspect
-
 h1.title = @page.title
-/ p: strong == @page.path
 p = @page.body
 
-ul.categories
-  li.category
-    a[href='#'] Getting out of debt
-    ul.links
-      li.link: a[href='#'] Credit Card Tools
-      li.link: a[href='#'] How Much do you Owe? (calculator)
-      li.link: a[href='#'] Personal Debt Consolidation Calculator
-  li.category
-    a[href='#'] Credit
-    ul.links
-      li.link: a[href='#'] link 1
-      li.link: a[href='#'] link 2
-  li.category
-    a[href='#'] Investing
-    ul.links
-      li.link: a[href='#'] link 1
-      li.link: a[href='#'] link 2
-  li.category
-    a[href='#'] Mortgages
-    ul.links
-      li.link: a[href='#'] link 1
-      li.link: a[href='#'] link 2
-  li.category
-    a[href='#'] Saving for the kids
-    ul.links
-      li.link: a[href='#'] link 1
-      li.link: a[href='#'] link 2
-  li.category
-    a[href='#'] Saving for retirement
-    ul.links
-      li.link: a[href='#'] link 1
-      li.link: a[href='#'] link 2
-  li.category
-    a[href='#'] Spending how you feel
-    ul.links
-      li.link: a[href='#'] link 1
-      li.link: a[href='#'] link 2
-  li.category
-    a[href='#'] Budgeting
-    ul.links
-      li.link: a[href='#'] link 1
-      li.link: a[href='#'] link 2
+ul.links
+  - @page.links.each do |link|
+    li.link: a[href=link.url target='_blank'] = link.text
+
+/ ul.categories
+/   li.category
+/     a[href='#'] Getting out of debt
+/     ul.links
+/       li.link: a[href='#'] Credit Card Tools
+/       li.link: a[href='#'] How Much do you Owe? (calculator)
+/       li.link: a[href='#'] Personal Debt Consolidation Calculator
+/   li.category
+/     a[href='#'] Credit
+/     ul.links
+/       li.link: a[href='#'] link 1
+/       li.link: a[href='#'] link 2
+/   li.category
+/     a[href='#'] Investing
+/     ul.links
+/       li.link: a[href='#'] link 1
+/       li.link: a[href='#'] link 2
+/   li.category
+/     a[href='#'] Mortgages
+/     ul.links
+/       li.link: a[href='#'] link 1
+/       li.link: a[href='#'] link 2
+/   li.category
+/     a[href='#'] Saving for the kids
+/     ul.links
+/       li.link: a[href='#'] link 1
+/       li.link: a[href='#'] link 2
+/   li.category
+/     a[href='#'] Saving for retirement
+/     ul.links
+/       li.link: a[href='#'] link 1
+/       li.link: a[href='#'] link 2
+/   li.category
+/     a[href='#'] Spending how you feel
+/     ul.links
+/       li.link: a[href='#'] link 1
+/       li.link: a[href='#'] link 2
+/   li.category
+/     a[href='#'] Budgeting
+/     ul.links
+/       li.link: a[href='#'] link 1
+/       li.link: a[href='#'] link 2

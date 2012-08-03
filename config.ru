@@ -4,14 +4,14 @@ Bundler.require
 require './gvllib'
 run Sinatra::Application
 
-# require 'rack/rewrite'
-# use Rack::Rewrite do
+require 'rack/rewrite'
+use Rack::Rewrite do
 
 #   # Redirect from Heroku subdomain and add www
 #   r301 %r{.*}, "http://www.stephendavis.im$&", :if => Proc.new { |rack_env| rack_env['SERVER_NAME'] == 'stephendavis.herokuapp.com' || (!(rack_env['SERVER_NAME'] =~ /www\./i) && rack_env['SERVER_NAME'] != 'localhost') }
 
-#   # Strip trailing slashes
-#   r301 %r{^/(.*)/$}, '/$1'
+  # Strip trailing slashes
+  r301 %r{^/(.*)/$}, '/$1'
 
 #   # WP and other misc
 #   r301 %r{^/\?.*}, '/'
@@ -26,4 +26,4 @@ run Sinatra::Application
 #   r301 '/portfolio', '/projects'
 #   r301 '/music', '/about'
 #   r301 '/contact', '/about'
-# end
+end

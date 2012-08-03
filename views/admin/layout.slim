@@ -14,16 +14,19 @@ html
       header.cf
         .logo: a[href='/'] Back to Site
       #main.cf
-        .primary == yield
+        .primary
+          / p.notice = @notice
+          == yield
         .secondary
           nav.main: ul
             li: a[href='/admin'] Dashboard
             li: a[href='/admin/pages'] Pages
-            li: a[href='/admin/links'] Links
+            li: a[href='/admin/links'] Links & Sections
       footer
         p.credits
           ' Website by
           a[href='http://www.j4studios.com/'] J4 Studios
-    script[src='/js/right.js']
-    script[src='/js/right-sortable.js']
+    script[src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js']
+    script[src='/js/placeholder_polyfill.jquery.min.combo.js']
+    script[src='/js/jquery-ui-1.8.22.custom.min.js']
     script[src='/js/admin.js']

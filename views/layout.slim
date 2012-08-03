@@ -17,8 +17,8 @@ html
         .primary: .primary-inner[class=page_class] == yield
         .secondary.cf
           nav.main: ul
-            - @pages.each do |page|
-              li[class="#{nav_class(page.slug)}"]: a[href==page.path]
+            - @pages.each_with_index do |page, i|
+              li[class="item-#{i+1} #{nav_class(page.slug)}"]: a[href==page.path]
                 = page.title
                 span.description = page.description
           / .social

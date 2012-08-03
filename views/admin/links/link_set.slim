@@ -1,0 +1,14 @@
+
+table
+  thead: tr
+    th Text
+    th URL
+    / th Page
+    th
+  tbody.sortable[data-url='/admin/links/sort']
+    - links.each do |link|
+      tr[id="link_#{link.id}"]
+        td.handle == truncate(link.text, 5)
+        td.handle = link.url
+        / td.handle = link.page.title
+        td: a.btn[href="/admin/links/#{link.id}/edit"] Edit

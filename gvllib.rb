@@ -17,16 +17,6 @@ before do
   # @recent_posts = Post.all(:fields => [:slug, :title, :published], :order => [:published.desc], :limit => 3)
   # @pages = Page.all(:fields => [:title, :slug, :description], :order => [:position.asc])
   @pages = Page.all(:slug.not => 'home', :fields => [:title, :slug, :description], :order => [:position.asc])
-  # @pages = pages.
-  # @pages = [
-  #   # Page.new('/','Home',''),
-  #   Page.new('money-topics','Money Topics','A little rollover subhead here.'),
-  #   Page.new('education','Education','A little rollover subhead here.'),
-  #   Page.new('how-do-i','How do I?','A little rollover subhead here.'),
-  #   Page.new('multimedia','Multimedia','A little rollover subhead here.'),
-  #   Page.new('assistance','Assistance','A little rollover subhead here.'),
-  #   Page.new('connect','Connect with us.','A little rollover subhead here.'),
-  # ]
 end
 
 
@@ -47,8 +37,8 @@ class Page
   def slugize; self.title.downcase.gsub(/\W/,'-').squeeze('-').chomp('-') end
   def path; "/#{self.slug}" end
 
-  has n, :sections
-  has n, :links
+  has n, :sections, :order => [:position.asc]
+  has n, :links, :order => [:position.asc]
 end
 
 class Section
@@ -61,21 +51,21 @@ class Section
   def slugize; self.title.downcase.gsub(/\W/,'-').squeeze('-').chomp('-') end
   def next_position; (last = Section.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1 end
 
-  has n, :links
+  has n, :links, :order => [:position.asc]
   belongs_to :page
 end
 
 class Link
   include DataMapper::Resource
   property :id, Serial
-  property :text, String, :required => true
-  property :url, String, :required => true
+  property :text, String, :length => 255, :required => true
+  property :url, String, :length => 255, :required => true
   property :position, Integer, :default => lambda { |r,p| r.next_position }
 
   def next_position; (last = Link.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1 end
 
   belongs_to :page
-  belongs_to :section
+  belongs_to :section, :required => false
 end
 
 DataMapper.finalize
@@ -87,7 +77,7 @@ DataMapper.auto_upgrade!
 # ----------------------------
 helpers do
   # def markdown(md) RDiscount.new(md, :smart).to_html end
-  def truncate(text, length = 40, end_string = ' &hellip;')
+  def truncate(text, length = 40, end_string = '&hellip;')
     words = text.split()
     words[0..(length-1)].join(' ') + (words.length > length ? end_string : '')
   end
@@ -138,14 +128,15 @@ get '/admin' do
 end
 get '/admin/pages' do
   protected!
+  # @pages = Page.all(:fields => [:id, :title, :description, :body], :order => [:position.asc])
   @pages = Page.all(:order => [:position.asc])
   slim :'admin/pages/index', :layout => :'admin/layout'
 end
-get '/admin/pages/:id' do
-  protected!
-  @page = Page.get(params[:id])
-  slim :'admin/pages/detail', :layout => :'admin/layout'
-end
+# get '/admin/pages/:id' do
+#   protected!
+#   @page = Page.get(params[:id])
+#   slim :'admin/pages/detail', :layout => :'admin/layout'
+# end
 get '/admin/pages/:id/edit' do
   protected!
   @page = Page.get(params[:id])
@@ -154,95 +145,86 @@ end
 patch '/admin/pages/:id' do
   protected!
   @page = Page.get(params[:id])
-  @page.attributes = params['page']
+  @page.attributes = params[:page]
   if @page.save
-    redirect to("/admin/pages/#{@page.id}")
+    # redirect to("/admin/pages/#{@page.id}")
+    # @notice = 'Page updated successfully'
+    redirect to('/admin/pages')
   else
     slim :'admin/pages/form', :layout => :'admin/layout'
   end
 end
 put '/admin/pages/sort' do
   protected!
-  params[:pages].each_with_index do |id, i|
-    Faq.update_all(['position=?', i+1], ['id=?', id])
+  # order = params[:page]
+  # Page.update_all(['position = FIND_IN_SET(id, ?)', ids.join(',')], { :id => ids })
+  params[:page].each_with_index do |id, i|
+    # Page.update_all(['position=?', i+1], ['id=?', id])
+    # Page.update(:login => 'kintaro')
+    Page.get(id).update(:position => i+1)
   end
   # render :nothing => true
+  ''
+  # params[:page].inspect
+end
+get '/admin/links' do
+  protected!
+  # @links = Link.all(:order => [:position.asc])
+  @pages = Page.all(:order => [:position.asc])
+  slim :'admin/links/index', :layout => :'admin/layout'
+end
+get '/admin/links/new' do
+  protected!
+  @link = Link.new
+  slim :'admin/links/form', :layout => :'admin/layout', :locals => { new_record: true }
+  # "Hello #{@link.inspect}"
+end
+post '/admin/links' do
+  protected!
+  @link = Link.new(params[:link])
+  if @link.save
+    redirect to('/admin/links')
+  else
+    slim :'admin/links/form', :layout => :'admin/layout', :locals => { new_record: true }
+  end
+end
+get '/admin/links/:id/edit' do
+  protected!
+  @link = Link.get(params[:id])
+  slim :'admin/links/form', :layout => :'admin/layout', :locals => { new_record: false }
+end
+patch '/admin/links/:id' do
+  protected!
+  @link = Link.get(params[:id])
+  @link.attributes = params[:link]
+  if @link.save
+    redirect to('/admin/links')
+  else
+    slim :'admin/links/form', :layout => :'admin/layout', :locals => { new_record: false }
+  end
+end
+delete '/admin/links/:id' do
+  protected!
+  Link.get(params[:id]).destroy
+  redirect to('/admin/links')
+end
+put '/admin/links/sort' do
+  protected!
+  params[:link].each_with_index do |id, i|
+    Link.get(id).update(:position => i+1)
+  end
   ''
 end
 
 get '/:slug' do
-  # if @page = Page.first(:slug => params[:slug])
-  if params[:slug] != 'home' && @page = Page.first(:slug => params[:slug])
+  pass if params[:slug] == 'home'
+  # if params[:slug] != 'home' && @page = Page.first(:slug => params[:slug])
+  if @page = Page.first(:slug => params[:slug])
     slim :page
   else
     error 404
   end
 end
-
-# get '/blog' do
-#   @title = 'Blog'
-#   @posts = Post.all(:order => [:published.desc])
-#   slim :'posts/index'
-# end
-# get '/blog/archive' do
-#   @title = 'Archive'
-#   @post_groups = Post.all.inject({}) do |s,p|
-#     ym = p.published.strftime('%Y-%m')
-#     s.merge(s[ym] ? {ym=>s[ym]<<p} : {ym=>[p]})
-#   end.sort {|a,b| b[0] <=> a[0]}
-#   slim :'posts/archive'
-# end
-# get '/blog/new' do
-#   protected!
-#   @title = 'New Post'
-#   @post = Post.new
-#   slim :'posts/form', locals: { new_record: true }
-# end
-# post '/blog' do
-#   protected!
-#   @post = Post.new(params['post'])
-#   if @post.save
-#     redirect to('/blog/' + @post.slug)
-#   else
-#     @title = 'New Post'
-#     slim :'posts/form', locals: { new_record: true }
-#   end
-# end
-# get '/blog/:id/edit' do
-#   protected!
-#   if @post = Post.get(params[:id])
-#     @title = 'Edit Post'
-#     slim :'posts/form', locals: { new_record: false }
-#   else
-#     error 404
-#   end
-# end
-# patch '/blog/:id' do
-#   protected!
-#   @post = Post.get(params[:id])
-#   @post.attributes = params['post']
-#   if @post.save
-#     redirect to('/blog/' + @post.slug)
-#   else
-#     @title = 'Edit Post'
-#     slim :'posts/form', locals: { new_record: false }
-#   end
-# end
-# delete '/blog/:id' do
-#   protected!
-#   Post.get(params[:id]).destroy
-#   redirect to('/blog')
-# end
-# get '/blog/:slug' do
-#   if @post = Post.first(:slug => params[:slug])
-#     @title = @post.title
-#     @older_post = Post.first(:published.lt => @post.published, :order => [:published.desc])
-#     @newer_post = Post.first(:published.gt => @post.published, :order => [:published.asc])
-#     slim :'posts/detail'
-#   else
-#     error 404
-#   end
-# end
 
 error 404 do
   @title = 'Not Found'
