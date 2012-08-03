@@ -12,20 +12,21 @@
 h1.title Administration
 
 .pages.sortable[data-url='/admin/pages/sort']
-	- @pages.each do |page|
-	  .page[id="page_#{page.id}"]
-	    h2.subtitle.page-title[title=page.description]
-	      span.handle = page.title
-	      a.btn.btn-mini[href="/admin/pages/#{page.id}/edit"] Edit this page
-	    - if page.sections.any?
-	      .sections.sortable[data-url='/admin/sections/sort']
-	        - page.sections.each do |section|
-	        	.section[id="section_#{section.id}"]
-		          h3.subtitle.section-title
-		            span.handle = section.title
-		            a.btn.btn-mini[href="/admin/sections/#{section.id}/edit"] Edit this section
-		          - if section.links.any?
-		            == slim :'admin/links/link_set', :layout => false, :locals => { :links => section.links }
-	    - else
-	      - if page.links.any?
-	        == slim :'admin/links/link_set', :layout => false, :locals => { :links => page.links }
+  - @pages.each do |page|
+    / - unsectioned_links = page.links.select { |link| !link.section_id }
+    .page[id="page_#{page.id}"]
+      h2.subtitle.page-title[title=page.description]
+        span.handle = page.title
+        a.btn.btn-mini[href="/admin/pages/#{page.id}/edit"] Edit this page
+      - if page.sections.any?
+        .sections.sortable[data-url='/admin/sections/sort']
+          - page.sections.each do |section|
+            .section[id="section_#{section.id}"]
+              h3.subtitle.section-title
+                span.handle = section.title
+                a.btn.btn-mini[href="/admin/sections/#{section.id}/edit"] Edit this section
+              == slim :'admin/links/link_set', :layout => false, :locals => { :links => section.links }
+        - if page.unsectioned_links.any?
+          == slim :'admin/links/link_set', :layout => false, :locals => { :links => page.unsectioned_links }
+      - else
+        == slim :'admin/links/link_set', :layout => false, :locals => { :links => page.links }

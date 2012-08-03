@@ -3,17 +3,6 @@
 - else
   h1.title New Link
 
-/ p = new_resource
-
-/ p:strong link
-p = @link.inspect
-/ p:strong link url
-/ p = @link.url && @link.url.empty?
-/ p:strong link section
-/ p = @link.section_id.class
-/ p: strong Existing record?
-/ p = @link.id ? 'Yes' : 'No'
-
 - if @link.errors.any?
   div.errors
     strong Errors
@@ -26,9 +15,11 @@ p = @link.inspect
 / form[action="/admin/links/#{@link.id}" method='POST']
 form[action=="#{@link.id ? '/admin/links/' + @link.id.to_s : '/admin/links'}" method='POST']
   .input.text
-    input[type='text' name='link[text]' placeholder='Text' value="#{@link.text}"]
+    label[for='text'] Text
+    input#text[type='text' name='link[text]' placeholder='Text' value="#{@link.text}"]
   .input.text
-    input[type='text' name='link[url]' placeholder='URL' value="#{@link.url}"]
+    label[for='url'] URL
+    input#url[type='text' name='link[url]' placeholder='URL' value="#{@link.url}"]
   .input.select
     label[for='page_id'] Page 
     select[name='link[page_id]' id='page_id']
@@ -56,4 +47,4 @@ form[action=="#{@link.id ? '/admin/links/' + @link.id.to_s : '/admin/links'}" me
     form.delete[action="/admin/links/#{@link.id}" method='POST']
       input[type='hidden' name='_method' value='DELETE']
       button.btn.btn-danger[type='submit'] Delete
-    a.btn[href==url('/admin/links')] Back to list
+    a.btn[href==url('/admin')] Back to list

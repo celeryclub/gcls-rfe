@@ -39,6 +39,7 @@ class Page
   
   # def slugize; self.title.downcase.gsub(/\W/,'-').squeeze('-').chomp('-') end
   def path; "/#{self.slug}" end
+  def unsectioned_links; self.links.select { |link| !link.section_id } end
 end
 
 class Section
@@ -47,7 +48,7 @@ class Section
   property :title, String, :required => true
   property :position, Integer, :default => lambda { |r,p| r.next_position }
 
-  has n, :links, :order => [:position.asc]
+  has n, :links, :order => [:position.asc], :constraint => :set_nil
   belongs_to :page
 
   def next_position; (last = Section.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1 end
@@ -57,6 +58,7 @@ class Link
   include DataMapper::Resource
   property :id, Serial
   property :text, String, :length => 255 #, :required => true
+  property :description, String, :length => 255
   property :url, String, :length => 255, :required => true
   property :position, Integer, :default => lambda { |r,p| r.next_position }
 
@@ -65,6 +67,7 @@ class Link
 
   before :valid?, :fix_associations
 
+  # def sectioned?; self end
   def text_or_url; (self.text && !self.text.empty?) ? self.text : self.url  end
   def next_position; (last = Link.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1 end
   def fix_associations

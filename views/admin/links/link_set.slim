@@ -16,5 +16,5 @@
 ul.sortable[data-url='/admin/links/sort']
   - links.each do |link|
     li.link[id="link_#{link.id}" title=link.url]
-    	span.handle == truncate(link.text_or_url, 10)
+    	span.handle == truncate(link.text_or_url, 8)
     	a.btn[href="/admin/links/#{link.id}/edit"] Edit this link

@@ -1,17 +1,22 @@
 h1.title = @page.title
 p = @page.body
 
+/ - unsectioned_links = @page.links.select { |link| !link.section_id }
+
 - if @page.sections.any?
-  .sections
+  ul.sections
     - @page.sections.each do |section|
-      h2.subtitle = section.title
-      - if section.links.any?
-        == slim :link_set, :layout => false, :locals => { :links => section.links }
-        / - section.links.each do |link|
-          / p = link.text
+    	li.section
+	      h2.subtitle = section.title
+	      / - if section.links.any?
+	      == slim :link_set, :layout => false, :locals => { :links => section.links }
+	        / - section.links.each do |link|
+	          / p = link.text
+  - if @page.unsectioned_links.any?
+    == slim :'admin/links/link_set', :layout => false, :locals => { :links => @page.unsectioned_links }
 - else
-  - if @page.links.any?
-    == slim :link_set, :layout => false, :locals => { :links => @page.links }
+  / - if @page.links.any?
+  == slim :link_set, :layout => false, :locals => { :links => @page.links }
 
 
 / ul.categories
