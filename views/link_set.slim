@@ -2,7 +2,8 @@ ul.links
   - links.each do |link|
     li.link: a[href=link.url target='_blank']
       = link.text_or_url
-      - if link.description
-        ' (
-        = link.description
-        ' )
+      - if link.description && !link.description.empty?
+        br
+        |  (
+        small = link.description
+        | )

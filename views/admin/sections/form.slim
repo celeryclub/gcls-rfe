@@ -12,13 +12,13 @@
 
 form[action=="#{@section.id ? '/admin/sections/' + @section.id.to_s : '/admin/sections'}" method='POST']
   .input.text
-    / label[for='title'] Title
+    label[for='title'] Title
     input#title[type='text' name='section[title]' placeholder='Title' value="#{@section.title}"]
   .input.select
     label[for='page_id'] Page 
     select#page_id[name='section[page_id]']
       option[value=''] Select a page
-      - Page.all(:order => [:position.asc]).each do |page|
+      - Page.all_but_home(:order => [:position.asc]).each do |page|
         - if page.id == @section.page_id
           option[value=page.id selected] = page.title
         - else

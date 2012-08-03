@@ -9,14 +9,12 @@ require 'coffee-script'
 # TODO
 # ----------------------------
 
+
 # Config
 # ----------------------------
 set :slim, :pretty => true
-# Page = Struct.new(:slug, :text, :description)
 before do
-  # @recent_posts = Post.all(:fields => [:slug, :title, :published], :order => [:published.desc], :limit => 3)
-  # @pages = Page.all(:fields => [:title, :slug, :description], :order => [:position.asc])
-  @pages = Page.all(:slug.not => 'home', :fields => [:title, :slug, :description], :order => [:position.asc])
+  @pages = Page.all_but_home(:fields => [:title, :slug, :description], :order => [:position.asc])
 end
 
 
@@ -28,7 +26,7 @@ class Page
   include DataMapper::Resource
   property :id, Serial
   property :title, String, :required => true #, :unique => true
-  property :slug, String #, :default => lambda { |r,p| r.slugize }
+  property :slug, String
   property :description, String, :length => 255
   # property :description, Text
   property :body, Text, :required => true
@@ -37,9 +35,13 @@ class Page
   has n, :sections, :order => [:position.asc]
   has n, :links, :order => [:position.asc]
   
-  # def slugize; self.title.downcase.gsub(/\W/,'-').squeeze('-').chomp('-') end
   def path; "/#{self.slug}" end
-  def unsectioned_links; self.links.select { |link| !link.section_id } end
+  def self.all_but_home(options = {})
+    Page.all({:slug.not => 'home'}.merge(options))
+  end
+  def unsectioned_links
+    self.links.select { |link| !link.section_id }
+  end
 end
 
 class Section
@@ -51,15 +53,17 @@ class Section
   has n, :links, :order => [:position.asc], :constraint => :set_nil
   belongs_to :page
 
-  def next_position; (last = Section.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1 end
+  def next_position
+    (last = Section.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1
+  end
 end
 
 class Link
   include DataMapper::Resource
   property :id, Serial
+  property :url, String, :length => 255, :required => true
   property :text, String, :length => 255 #, :required => true
   property :description, String, :length => 255
-  property :url, String, :length => 255, :required => true
   property :position, Integer, :default => lambda { |r,p| r.next_position }
 
   belongs_to :page
@@ -67,11 +71,13 @@ class Link
 
   before :valid?, :fix_associations
 
-  # def sectioned?; self end
-  def text_or_url; (self.text && !self.text.empty?) ? self.text : self.url  end
-  def next_position; (last = Link.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1 end
+  def text_or_url
+    (self.text && !self.text.empty?) ? self.text : self.url
+  end
+  def next_position
+    (last = Link.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1
+  end
   def fix_associations
-    # self.url = self.url.empty? ? 'howser.biz' : self.url
     # self.section_id = self.section_id.to_i
     # self.section_id = self.section_id.class == String ? nil : self.section_id
     if self.section_id.class == String
@@ -122,7 +128,6 @@ helpers do
       'current'
     end
   end
-
 end
 
 
@@ -142,17 +147,6 @@ get '/admin' do
   @pages = Page.all(:order => [:position.asc])
   slim :'admin/index', :layout => :'admin/layout'
 end
-# get '/admin/pages' do
-#   protected!
-#   # @pages = Page.all(:fields => [:id, :title, :description, :body], :order => [:position.asc])
-#   @pages = Page.all(:order => [:position.asc])
-#   slim :'admin/pages/index', :layout => :'admin/layout'
-# end
-# get '/admin/pages/:id' do
-#   protected!
-#   @page = Page.get(params[:id])
-#   slim :'admin/pages/detail', :layout => :'admin/layout'
-# end
 get '/admin/pages/:id/edit' do
   protected!
   @page = Page.get(params[:id])
@@ -163,25 +157,18 @@ patch '/admin/pages/:id' do
   @page = Page.get(params[:id])
   @page.attributes = params[:page]
   if @page.save
-    # redirect to("/admin/pages/#{@page.id}")
     # @notice = 'Page updated successfully'
-    redirect to('/admin/pages')
+    redirect to('/admin')
   else
     slim :'admin/pages/form', :layout => :'admin/layout'
   end
 end
 put '/admin/pages/sort' do
   protected!
-  # order = params[:page]
-  # Page.update_all(['position = FIND_IN_SET(id, ?)', ids.join(',')], { :id => ids })
   params[:page].each_with_index do |id, i|
-    # Page.update_all(['position=?', i+1], ['id=?', id])
-    # Page.update(:login => 'kintaro')
     Page.get(id).update(:position => i+1)
   end
-  # render :nothing => true
   ''
-  # params[:page].inspect
 end
 get '/admin/sections/new' do
   protected!
@@ -215,8 +202,7 @@ end
 delete '/admin/sections/:id' do
   protected!
   Section.get(params[:id]).destroy
-  # redirect to('/admin')
-  "section #{params[:id]} deleted"
+  redirect to('/admin')
 end
 put '/admin/sections/sort' do
   protected!
@@ -225,17 +211,10 @@ put '/admin/sections/sort' do
   end
   ''
 end
-# get '/admin/links' do
-#   protected!
-#   # @links = Link.all(:order => [:position.asc])
-#   @pages = Page.all(:order => [:position.asc])
-#   slim :'admin/links/index', :layout => :'admin/layout'
-# end
 get '/admin/links/new' do
   protected!
   @link = Link.new
-  slim :'admin/links/form', :layout => :'admin/layout' #, :locals => { new_record: true }
-  # "Hello #{@link.inspect}"
+  slim :'admin/links/form', :layout => :'admin/layout'
 end
 post '/admin/links' do
   protected!
@@ -243,13 +222,13 @@ post '/admin/links' do
   if @link.save
     redirect to('/admin')
   else
-    slim :'admin/links/form', :layout => :'admin/layout' #, :locals => { new_record: true }
+    slim :'admin/links/form', :layout => :'admin/layout'
   end
 end
 get '/admin/links/:id/edit' do
   protected!
   @link = Link.get(params[:id])
-  slim :'admin/links/form', :layout => :'admin/layout' #, :locals => { new_record: false }
+  slim :'admin/links/form', :layout => :'admin/layout'
 end
 patch '/admin/links/:id' do
   protected!
@@ -258,7 +237,7 @@ patch '/admin/links/:id' do
   if @link.save
     redirect to('/admin')
   else
-    slim :'admin/links/form', :layout => :'admin/layout' #, :locals => { new_record: false }
+    slim :'admin/links/form', :layout => :'admin/layout'
   end
 end
 delete '/admin/links/:id' do
@@ -276,7 +255,6 @@ end
 
 get '/:slug' do
   pass if params[:slug] == 'home'
-  # if params[:slug] != 'home' && @page = Page.first(:slug => params[:slug])
   if @page = Page.first(:slug => params[:slug])
     slim :page
   else

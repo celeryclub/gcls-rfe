@@ -59,14 +59,15 @@ h1 {
 // }
 // blockquote,
 p { margin: .6em 0; }
-// ol, ul {
+ul {
+  list-style: disc;
 //   margin: .6em 0;
 //   padding: 0 0 0 2em;
-// }
-ul ul,
-ul ol,
-ol ol,
-ol ul { margin: 0; }
+}
+ul ul { margin: 0; }
+li {
+  margin: .5em 0;
+}
 // h3 + p,
 // h4 + p,
 // h3 + ul,
@@ -280,6 +281,12 @@ footer {
   	// margin: 2em 0;
   	// background: #00A69D;
   	background: $teal;
+    a {
+      text-decoration: none;
+    }
+    .finra {
+      text-align: center;
+    }
   	.copyright,
   	.credits {
   		width: 50%;
@@ -294,6 +301,25 @@ footer {
 
 // Home Page
 // --------------------------------
+
+// All Link Pages
+// --------------------------------
+.sections {
+  list-style: none;
+
+}
+.section {
+
+}
+.section-title {
+  color: $teal;
+  font-size: 18px;
+}
+.section .section-title:before {
+  content: '+ ';
+  font-size: .8em;
+  vertical-align: top;
+}
 
 // Money Topics Page
 // --------------------------------

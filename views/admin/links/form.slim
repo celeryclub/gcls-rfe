@@ -15,16 +15,19 @@
 / form[action="/admin/links/#{@link.id}" method='POST']
 form[action=="#{@link.id ? '/admin/links/' + @link.id.to_s : '/admin/links'}" method='POST']
   .input.text
+    label[for='url'] URL
+    input#url[type='text' name='link[url]' placeholder='URL' value="#{@link.url}"]
+  .input.text
     label[for='text'] Text
     input#text[type='text' name='link[text]' placeholder='Text' value="#{@link.text}"]
   .input.text
-    label[for='url'] URL
-    input#url[type='text' name='link[url]' placeholder='URL' value="#{@link.url}"]
+    label[for='description'] Description
+    input#description[type='text' name='link[description]' placeholder='Description' value="#{@link.description}"]
   .input.select
     label[for='page_id'] Page 
     select[name='link[page_id]' id='page_id']
       option[value=''] Select a page
-      - Page.all(:order => [:position.asc]).each do |page|
+      - Page.all_but_home(:order => [:position.asc]).each do |page|
         - if page.id == @link.page_id
           option[value=page.id selected] = page.title
         - else

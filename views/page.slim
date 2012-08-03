@@ -7,13 +7,12 @@ p = @page.body
   ul.sections
     - @page.sections.each do |section|
     	li.section
-	      h2.subtitle = section.title
-	      / - if section.links.any?
+	      span.section-title = section.title
 	      == slim :link_set, :layout => false, :locals => { :links => section.links }
 	        / - section.links.each do |link|
 	          / p = link.text
   - if @page.unsectioned_links.any?
-    == slim :'admin/links/link_set', :layout => false, :locals => { :links => @page.unsectioned_links }
+    == slim :link_set, :layout => false, :locals => { :links => @page.unsectioned_links }
 - else
   / - if @page.links.any?
   == slim :link_set, :layout => false, :locals => { :links => @page.links }
