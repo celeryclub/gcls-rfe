@@ -1,0 +1,20 @@
+
+/ table
+/   thead: tr
+/     th Text
+/     th URL
+/     / th Page
+/     th
+/   tbody.sortable[data-url='/admin/links/sort']
+/     - links.each do |link|
+/       tr[id="link_#{link.id}"]
+/         td.handle == truncate(link.text, 5)
+/         td.handle = link.url
+/         / td.handle = link.page.title
+/         td: a.btn[href="/admin/links/#{link.id}/edit"] Edit
+
+ul.sortable[data-url='/admin/links/sort']
+  - links.each do |link|
+    li.link[id="link_#{link.id}" title=link.url]
+    	span.handle == truncate(link.text_or_url, 8)
+    	a.btn[href="/admin/links/#{link.id}/edit"] Edit this link

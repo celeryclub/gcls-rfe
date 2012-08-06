@@ -1,0 +1,35 @@
+- if @section.id
+  h1.title Edit Section
+- else
+  h1.title New Section
+
+- if @section.errors.any?
+  div.errors
+    strong Errors
+    ul
+      - @section.errors.full_messages.each do |message|
+        li = message
+
+form[action=="#{@section.id ? '/admin/sections/' + @section.id.to_s : '/admin/sections'}" method='POST']
+  .input.text
+    label[for='title'] Title
+    input#title[type='text' name='section[title]' placeholder='Title' value="#{@section.title}"]
+  .input.select
+    label[for='page_id'] Page 
+    select#page_id[name='section[page_id]']
+      option[value=''] Select a page
+      - Page.all_but_home(:order => [:position.asc]).each do |page|
+        - if page.id == @section.page_id
+          option[value=page.id selected] = page.title
+        - else
+          option[value=page.id] = page.title
+  - if @section.id
+    input[type='hidden' name='_method' value='PATCH']
+  .controls
+    button.btn.btn-primary[type='submit'] = @section.id ? 'Update' : 'Create'
+- if @section.id
+  .controls
+    form.delete[action="/admin/sections/#{@section.id}" method='POST']
+      input[type='hidden' name='_method' value='DELETE']
+      button.btn.btn-danger[type='submit'] Delete
+    a.btn[href==url('/admin')] Back to list

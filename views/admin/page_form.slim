@@ -1,0 +1,23 @@
+h1.title Edit Page
+
+- if @page.errors.any?
+  div.errors
+    strong Errors
+    ul
+      - @page.errors.full_messages.each do |message|
+        li = message
+
+form[action="/admin/pages/#{@page.id}" method='POST']
+  .input.text
+    label[for='title'] Title
+    input#title[type='text' name='page[title]' placeholder='Title' value="#{@page.title}"]
+  .input.text
+    label[for='description'] Description
+    input#description[type='text' name='page[description]' placeholder='Description' value="#{@page.description}"]
+  .input.textarea
+    label[for='body'] Body
+    textarea#body[name='page[body]' placeholder='Body'] = @page.body
+  input[type='hidden' name='_method' value='PATCH']
+  .controls
+    button.btn.btn-primary[type='submit'] Update
+    a.btn[href="/admin/pages"] Back to list
