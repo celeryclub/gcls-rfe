@@ -7,7 +7,7 @@ p = @page.body
   ul.sections
     - @page.sections.each do |section|
     	li.section
-	      span.section-title = section.title
+	      h2.section-title = section.title
 	      == slim :link_set, :layout => false, :locals => { :links => section.links }
 	        / - section.links.each do |link|
 	          / p = link.text

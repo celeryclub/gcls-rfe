@@ -8,6 +8,8 @@ require 'coffee-script'
 
 # TODO
 # ----------------------------
+# Fix this: http://localhost:4567/mayaisthebomb.com
+# add "http" to links if it's not there
 
 
 # Config
@@ -34,10 +36,10 @@ class Page
 
   has n, :sections, :order => [:position.asc]
   has n, :links, :order => [:position.asc]
-  
+
   def path; "/#{self.slug}" end
   def self.all_but_home(options = {})
-    Page.all({:slug.not => 'home'}.merge(options))
+    self.all({:slug.not => 'home'}.merge(options))
   end
   def unsectioned_links
     self.links.select { |link| !link.section_id }
@@ -56,6 +58,7 @@ class Section
   def next_position
     (last = Section.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1
   end
+  def fix_associations
 end
 
 class Link
@@ -71,6 +74,9 @@ class Link
 
   before :valid?, :fix_associations
 
+  # def url= new_username
+  #   super new_username.downcase
+  # end
   def text_or_url
     (self.text && !self.text.empty?) ? self.text : self.url
   end
@@ -121,6 +127,7 @@ helpers do
       ''
     end
   end
+  def home?; request.path.split('/').length == 0 end
   def page_class; request.path.split('/')[1] end
   def nav_class(uri)
     segments = request.path.split('/')
@@ -150,7 +157,7 @@ end
 get '/admin/pages/:id/edit' do
   protected!
   @page = Page.get(params[:id])
-  slim :'admin/pages/form', :layout => :'admin/layout'
+  slim :'admin/page_form', :layout => :'admin/layout'
 end
 patch '/admin/pages/:id' do
   protected!
@@ -160,7 +167,7 @@ patch '/admin/pages/:id' do
     # @notice = 'Page updated successfully'
     redirect to('/admin')
   else
-    slim :'admin/pages/form', :layout => :'admin/layout'
+    slim :'admin/page_form', :layout => :'admin/layout'
   end
 end
 put '/admin/pages/sort' do
@@ -173,7 +180,7 @@ end
 get '/admin/sections/new' do
   protected!
   @section = Section.new
-  slim :'admin/sections/form', :layout => :'admin/layout'
+  slim :'admin/section_form', :layout => :'admin/layout'
 end
 post '/admin/sections' do
   protected!
@@ -181,13 +188,13 @@ post '/admin/sections' do
   if @section.save
     redirect to('/admin')
   else
-    slim :'admin/sections/form', :layout => :'admin/layout'
+    slim :'admin/section_form', :layout => :'admin/layout'
   end
 end
 get '/admin/sections/:id/edit' do
   protected!
   @section = Section.get(params[:id])
-  slim :'admin/sections/form', :layout => :'admin/layout'
+  slim :'admin/section_form', :layout => :'admin/layout'
 end
 patch '/admin/sections/:id' do
   protected!
@@ -196,7 +203,7 @@ patch '/admin/sections/:id' do
   if @section.save
     redirect to('/admin')
   else
-    slim :'admin/sections/form', :layout => :'admin/layout'
+    slim :'admin/section_form', :layout => :'admin/layout'
   end
 end
 delete '/admin/sections/:id' do
@@ -214,7 +221,7 @@ end
 get '/admin/links/new' do
   protected!
   @link = Link.new
-  slim :'admin/links/form', :layout => :'admin/layout'
+  slim :'admin/link_form', :layout => :'admin/layout'
 end
 post '/admin/links' do
   protected!
@@ -222,13 +229,13 @@ post '/admin/links' do
   if @link.save
     redirect to('/admin')
   else
-    slim :'admin/links/form', :layout => :'admin/layout'
+    slim :'admin/link_form', :layout => :'admin/layout'
   end
 end
 get '/admin/links/:id/edit' do
   protected!
   @link = Link.get(params[:id])
-  slim :'admin/links/form', :layout => :'admin/layout'
+  slim :'admin/link_form', :layout => :'admin/layout'
 end
 patch '/admin/links/:id' do
   protected!
@@ -237,7 +244,7 @@ patch '/admin/links/:id' do
   if @link.save
     redirect to('/admin')
   else
-    slim :'admin/links/form', :layout => :'admin/layout'
+    slim :'admin/link_form', :layout => :'admin/layout'
   end
 end
 delete '/admin/links/:id' do

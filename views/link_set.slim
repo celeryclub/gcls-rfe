@@ -1,9 +1,6 @@
 ul.links
   - links.each do |link|
-    li.link: a[href=link.url target='_blank']
-      = link.text_or_url
+    li.link: a[href==link.url target='_blank']
+      span.link-text = link.text_or_url
       - if link.description && !link.description.empty?
-        br
-        |  (
-        small = link.description
-        | )
+        small.link-description = " (#{link.description})"

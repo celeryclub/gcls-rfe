@@ -6,14 +6,18 @@ html
     link[rel='stylesheet' href='/css/screen.css']
     / link[rel='shortcut icon' href='/favicon.png']
     script[src='/js/html5shiv.js']
-    / script[src='//use.typekit.net/cay7bya.js']
+    script[src='//use.typekit.net/cay7bya.js']
     javascript:
       try{Typekit.load();}catch(e){}
   body
-    .wrapper
+    .wrapper[class="#{home? ? 'home' : ''}"]
       header.cf
-        .logo: a[href='/'] Stephen Davis
+        .logos.cf: a[href='/']
+          .logo.gls: img[src='/img/gls-logo-small.png' width='179' height='113']
+          .logo.rfe: img[src='/img/rfe-logo-small.png' width='217' height='72']
+        .social
       #main.cf
+        / p = home?
         .primary: .primary-inner[class=page_class] == yield
         .secondary.cf
           nav.main: ul
@@ -21,7 +25,6 @@ html
               li[class="item-#{i+1} #{nav_class(page.slug)}"]: a[href==page.path]
                 = page.title
                 span.description = page.description
-          / .social
           /   h3.widget-title On the internet
           /   ul
           /     li: a[href='http://twitter.com/stephendavis89/'] Twitter
@@ -39,10 +42,10 @@ html
         .colophon
           .colophon-inner.cf
             p.finra: small This website is made possible by a grant from the FINRA Investor Education Foundation through Smart investing@your library®, a partnership with the American Library Association.
-            p.copyright
+            .copyright: p
               ' Copyright #{Time.now.strftime('%Y')}
               a[href='http://www.greenvillelibrary.org/'] Greenville Library System
               ' . All rights reserved.
-            p.credits
+            .credits: p
               ' Website by
               a[href='http://www.j4studios.com/'] J4 Studios.

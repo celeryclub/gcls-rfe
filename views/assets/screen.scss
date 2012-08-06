@@ -1,7 +1,8 @@
 // Colors
 // --------------------------------
 $white: #FEFEFE;
-$medium_grey: #999;
+// $light_grey: #999;
+$grey: #999;
 $dark_grey: #333;
 $light_yellow: #FFF5D8;
 $medium_yellow: #ffebc5;
@@ -16,9 +17,10 @@ $teal: #00A69D;
 body {
 	background: $light_yellow;
   // background: $white url("/img/light_wool.png") top center;
-  color: $medium_grey;
+  color: $grey;
   font-family: "museo", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
   font-size: 16px;
+  line-height: 1.2em;
 }
 h1, h2, h3, h4,
 nav.main a {
@@ -45,10 +47,11 @@ h1 {
 
 //   margin: 0;
 }
-// h2 {
-//   font-size: 32px;
+h2 {
+  // font-size: 32px;
+  font-size: 18px;
 //   line-height: 1.1em;
-// }
+}
 // h3 {
 //   font-size: 22px;
 //   font-family: "PT Sans Narrow", Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
@@ -64,9 +67,13 @@ ul {
 //   margin: .6em 0;
 //   padding: 0 0 0 2em;
 }
-ul ul { margin: 0; }
 li {
-  margin: .5em 0;
+  line-height: 1.6em;
+  // margin: .5em 0;
+}
+ul ul { margin: 0; }
+ul ul li {
+  line-height: 1.4em;
 }
 // h3 + p,
 // h4 + p,
@@ -94,18 +101,19 @@ li {
 //   background-color: #CCC;
 //   height: 1px;
 // }
-// a {
+a {
 //   // padding: 0 .1em;
 //   // margin: 0 -.1em;
-//   color: $darkblue;
+  color: $grey;
 //   text-decoration: none;
 //   outline: none;
+  &:hover { color: $dark_grey; }
 //   &:hover {
 //     color: $white;
 //     background: #444;
 //     text-decoration: none;
 //   }
-// }
+}
 // blockquote {
 //   background: #F6F6F6;
 //   border-top: 1px dashed #CCC;
@@ -122,7 +130,12 @@ li {
 
 // Positioning
 // --------------------------------
-// .wrapper {}
+.wrapper {
+  background: url("/img/big-ring.png") -740px top no-repeat;
+  &.home {
+    background: url("/img/big-ring-home.png") -650px top no-repeat;
+  }
+}
 header,
 #main,
 .thanks-inner,
@@ -130,25 +143,43 @@ header,
   width: 1000px;
   margin: 0 auto;
   // padding: 0 1em;
-	background: red;
+	// background: red;
 }
 .primary {
   width: 46%;
   float: right;
-  background: yellow;
+  // background: yellow;
 }
 .secondary {
   float: left;
   width: 54%;
-  background: green;
+  // background: green;
 }
 
 // Header
 // --------------------------------
 header {
 //   clear: both;
-//   position: relative;
+  padding-top: 84px;
+  // margin-bottom: -30px;
+  position: relative;
 //   margin-bottom: 1.4em;
+  .logos {}
+  .logo {
+    float: left;
+    // background: orange;
+    &.rfe {
+      padding: 53px 0 0 42px;
+    }
+  }
+  .social {
+    position: absolute;
+    top: 23px;
+    right: 45px;
+    background: blue;
+    width: 30px;
+    height: 20px;
+  }
 }
 // .logo {
 //   text-transform: lowercase;
@@ -187,11 +218,16 @@ header {
 #main {
   // background: $light_grey;
   // padding: 25px 0 50px;
+  // overflow: visible;
+  position: relative;
 }
 
 // Primary
 // --------------------------------
-// .primary {}
+.primary {
+  margin-top: -60px;
+  // overflow: visible;
+}
 .primary-inner {
 	padding-left: 80px;
 	background-position: left top;
@@ -215,6 +251,28 @@ header {
 //   font-style: italic;
 // }
 
+// .sections {
+  // list-style: none;
+// }
+.section {
+  color: $teal;
+}
+.section-title {
+  // font-size: 18px;
+}
+// .section .section-title:before {
+//   content: '+ ';
+//   font-size: .8em;
+//   vertical-align: top;
+// }
+.link {
+  color: $grey;
+}
+.link-description {
+  // display: block;
+  // margin-left: 1em;
+}
+
 // Secondary
 // --------------------------------
 nav.main {
@@ -231,13 +289,13 @@ nav.main {
     .description {
     	font-size: 18px;
     	display: block;
-    	color: $medium_grey;
+    	color: $grey;
     }
-    &:hover,
+    // &:hover { color: $dark_grey; }
     &:hover .description { color: $dark_grey; }
   }
   .current > a {
-    color: $medium_grey;
+    color: $grey;
     // margin-left: -.7em;
     // &:before { content: "/ "; }
   }
@@ -292,9 +350,12 @@ footer {
   		width: 50%;
   		float: left;
   	}
-  	.copyright {}
+  	.copyright p {
+      padding-left: 15px;
+    }
   	.credits {
-  		text-align: right
+  		text-align: right;
+      p { padding-right: 15px; }
   	}
 	}
 }
@@ -302,29 +363,23 @@ footer {
 // Home Page
 // --------------------------------
 
-// All Link Pages
-// --------------------------------
-.sections {
-  list-style: none;
-
-}
-.section {
-
-}
-.section-title {
-  color: $teal;
-  font-size: 18px;
-}
-.section .section-title:before {
-  content: '+ ';
-  font-size: .8em;
-  vertical-align: top;
-}
-
 // Money Topics Page
 // --------------------------------
 .money-topics {
 	background-image: url("../img/money-topics.png");
+}
+
+// How do I Page
+// --------------------------------
+.how-do-i {
+  // background-image: url("../img/money-topics.png");
+}
+
+// Education Page
+// --------------------------------
+.education {
+  background-image: url("../img/money-topics.png");
+  // background-repeat: repeat-y;
 }
 
 // // Blog

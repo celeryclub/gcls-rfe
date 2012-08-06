@@ -25,8 +25,8 @@ h1.title Administration
               h3.subtitle.section-title
                 span.handle = section.title
                 a.btn.btn-mini[href="/admin/sections/#{section.id}/edit"] Edit this section
-              == slim :'admin/links/set', :layout => false, :locals => { :links => section.links }
+              == slim :'admin/link_set', :layout => false, :locals => { :links => section.links }
         - if page.unsectioned_links.any?
-          == slim :'admin/links/set', :layout => false, :locals => { :links => page.unsectioned_links }
+          == slim :'admin/link_set', :layout => false, :locals => { :links => page.unsectioned_links }
       - else
-        == slim :'admin/links/set', :layout => false, :locals => { :links => page.links }
+        == slim :'admin/link_set', :layout => false, :locals => { :links => page.links }
