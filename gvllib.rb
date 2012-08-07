@@ -15,8 +15,7 @@ require 'coffee-script'
 # add "http" to links if it's not there
 # Style homepage
 # Style Multimedia page
-# Finish section filter JS
-# JS section collapse?
+# flatten bootstrap
 # Add "all_but_home_and_contact" method for link assignment
 
 

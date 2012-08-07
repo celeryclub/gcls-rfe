@@ -7,17 +7,22 @@ $ ->
   #   return ui;
 
   $('.sortable').disableSelection()
-  # Table fix
   # $('.sortable').on('mousedown', ->
-  #   $(this).find('td').each( -> $(this).width($(this).width()) )
-  #   # console.log $(this)
+  #   console.log $(this).height()
+  #   console.log $(this).innerHeight()
+  #   console.log $(this).outerHeight(true)
+  #   $(this).height($(this).outerHeight(true))
+  #   # $(this).height($(this).height())
+  # #   $(this).find('ul').each( -> $(this).height($(this).height()) )
+  # #   console.log $(this)
   # )
   $('.sortable').sortable({
-    # cursor: 'move'
-    # helper: 'clone'
-    # helper: 'fix_helper'
-    # forceHelperSize: true
-    # stop: (e, tr) ->
+    # Watch out for min-height on sortable children
+    create: -> $(this).height($(this).height())
+    # create: -> $(this).height($(this).outerHeight(true))
+    # stop: -> $(this).height('auto')
+    # stop: (e, ui) ->
+      # ui.item.height('auto')
     #   # console.log $(this)
     #   $(this).find('td').each( -> $(this).width('auto') )
     #   # tr.item.children().each( (i, td) ->
@@ -26,6 +31,7 @@ $ ->
     #     # $(this).height(originals.eq(i).height())
     #   # )
     # helper: (e, ui) ->
+      # $(ui).height($(ui).height())
     #   originals = ui.children()
     #   helper = ui.clone()
     #   helper.children().each( (i) ->
@@ -52,40 +58,30 @@ $ ->
       })
   })
   
-  # $('#page_id').each ( ->
-    # console.log $(this)
-    # $(this).on( 'click', filter_sections_by($(this)) )
-  # )
-  # $('#page_id').on( 'click', filter_sections_by($(this)) )
-  $('#page_id').on( 'click', filter_sections )
-  
-  # $('#page_id').filter_sections_by($(this))
+  $('.btn-danger').on('click', -> false unless confirm 'Are you sure?')
 
-  $('.btn.btn-danger').on('click', -> false unless confirm 'Are you sure?')
+  filter_sections()
+  $('.link-form').find('#page_id').on('change', filter_sections)
+  # $('.link-form').find('#page_id').on('change', -> console.log('hey'))
 
   $(document).on(
     'keydown'
     (e) ->
-      # console.log e.which
       # Cancel drag
       if e.which == 27
         $('.sortable').sortable('cancel')
-#       # Next post
-#       else if e.which == 39
-#         newer = $('.newer').find('a')
-#         if newer.length > 0
-#           window.location = newer.attr('href')
   )
 
-# filter_sections_by = (field) ->
+original_sections = $('#section_id').find('option')
 filter_sections = ->
-  console.log "$(this)"
-  # console.log $(field).selected().attr('value')
-  # section_select = $(this).closest('.input').next().find('#section_id')
-    # $(this).is(':checked') ? i.slideDown('fast') : i.slideUp('fast');
-  # });
-
-# strip_trailing_slash = (str) ->
-#   if str.substr(-1) == '/'
-#     str.substr(0, str.length - 1)
-#   str
+  section_container = $('#section_id')
+  section_group = section_container.closest('.control-group')
+  selected_page_id = $('#page_id').find('option:selected').attr('value')
+  section_container.html(original_sections)
+  original_sections.each( ->
+    if $(this).attr('data-page-id') && $(this).attr('data-page-id') != selected_page_id then $(this).remove()
+  )
+  if section_container.find('option').length == 1
+    section_group.hide()
+  else
+    section_group.show()

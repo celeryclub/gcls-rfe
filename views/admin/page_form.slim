@@ -2,20 +2,20 @@ h1.title Edit Page
 
 - if @page.errors.any?
   .alert.alert-error: ul
-    - @link.errors.full_messages.each do |message|
+    - @page.errors.full_messages.each do |message|
       li = message
 
-form[action="/admin/pages/#{@page.id}" method='POST']
-  .input.text
-    label[for='title'] Title
-    input#title[type='text' name='page[title]' placeholder='Title' value="#{@page.title}"]
-  .input.text
-    label[for='description'] Description
-    input#description[type='text' name='page[description]' placeholder='Description' value="#{@page.description}"]
-  .input.textarea
-    label[for='body'] Body
-    textarea#body[name='page[body]' placeholder='Body'] = @page.body
+form.form-horizontal[action="/admin/pages/#{@page.id}" method='POST']
+  .control-group
+    label.control-label[for='title'] Title
+    .controls: input.input-xlarge#title[type='text' name='page[title]' placeholder='Title' value="#{@page.title}"]
+  .control-group
+    label.control-label[for='description'] Description
+    .controls: input.input-xlarge#description[type='text' name='page[description]' placeholder='Description' value="#{@page.description}"]
+  .control-group
+    label.control-label[for='body'] Body
+    .controls: textarea.input-xlarge#body[name='page[body]' placeholder='Body'] = @page.body
   input[type='hidden' name='_method' value='PATCH']
-  .controls
+  .form-actions
     button.btn.btn-primary[type='submit'] Update
-    a.btn[href="/admin/pages"] Back to list
+    a.btn[href="/admin"] Back to list

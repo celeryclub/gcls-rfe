@@ -12,30 +12,30 @@ html
       / try{Typekit.load();}catch(e){}
   body.admin
     .wrapper
-      header.cf
+      header
         .navbar
           .navbar-inner
             .container
-              span.brand Administration
+              a.brand[href='/admin'] Administration
               ul.nav
                 li: a[href='/'] Back to Site
-      #main.cf
-        .primary.cf
+      #main
+        .primary
           - if flash[:alert]
             .alert.alert-success: p = flash[:alert]
           == yield
         .secondary
-          .well: ul.nav.nav-list
-            / li.nav-header links
+          nav.well: ul.nav.nav-list
+            / li.nav-header Links
             li: a[href='/admin'] Dashboard
+            li.divider
             li: a[href='/admin/sections/new'] New Section
-            li: a[href='/admin/links/new'] New link
+            li: a[href='/admin/links/new'] New Link
       footer: p
         ' Built by
         a[href='http://www.j4studios.com/'] J4 Studios
     script[src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js']
     javascript:
       window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')
-    script[src='/js/placeholder_polyfill.jquery.min.combo.js']
     script[src='/js/jquery-ui-1.8.22.custom.min.js']
     script[src='/js/admin.js']
