@@ -51,6 +51,15 @@ $ ->
         # dataType: dataType
       })
   })
+  
+  # $('#page_id').each ( ->
+    # console.log $(this)
+    # $(this).on( 'click', filter_sections_by($(this)) )
+  # )
+  # $('#page_id').on( 'click', filter_sections_by($(this)) )
+  $('#page_id').on( 'click', filter_sections )
+  
+  # $('#page_id').filter_sections_by($(this))
 
   $('.btn.btn-danger').on('click', -> false unless confirm 'Are you sure?')
 
@@ -67,6 +76,14 @@ $ ->
 #         if newer.length > 0
 #           window.location = newer.attr('href')
   )
+
+# filter_sections_by = (field) ->
+filter_sections = ->
+  console.log "$(this)"
+  # console.log $(field).selected().attr('value')
+  # section_select = $(this).closest('.input').next().find('#section_id')
+    # $(this).is(':checked') ? i.slideDown('fast') : i.slideUp('fast');
+  # });
 
 # strip_trailing_slash = (str) ->
 #   if str.substr(-1) == '/'

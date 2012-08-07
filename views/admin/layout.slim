@@ -3,28 +3,33 @@ html
   head
     title Administration - Recipe for Financial Empowerment
     link[rel='stylesheet' href='/css/normalize.css']
+    link[rel='stylesheet' href='/css/bootstrap-custom.css']
     link[rel='stylesheet' href='/css/admin.css']
-    / link[rel='shortcut icon' href='/favicon.png']
+    link[rel='shortcut icon' href='/favicon.png']
     script[src='/js/html5shiv.js']
-    script[src='//use.typekit.net/cay7bya.js']
-    javascript:
-      try{Typekit.load();}catch(e){}
+    / script[src='//use.typekit.net/cay7bya.js']
+    / javascript:
+      / try{Typekit.load();}catch(e){}
   body.admin
     .wrapper
       header.cf
-        .logo: a[href='/'] Back to Site
+        .navbar
+          .navbar-inner
+            .container
+              span.brand Administration
+              ul.nav
+                li: a[href='/'] Back to Site
       #main.cf
         .primary.cf
-          / p.notice = @notice
+          - if flash[:alert]
+            .alert.alert-success: p = flash[:alert]
           == yield
         .secondary
-          nav.main.widget: ul
+          .well: ul.nav.nav-list
+            / li.nav-header links
             li: a[href='/admin'] Dashboard
-            / li: a[href='/admin/pages'] Pages
-            / li: a[href='/admin/links'] Links & Sections
-          .widget
-            a.btn[href='/admin/sections/new'] New Section
-            a.btn[href='/admin/links/new'] New link
+            li: a[href='/admin/sections/new'] New Section
+            li: a[href='/admin/links/new'] New link
       footer: p
         ' Built by
         a[href='http://www.j4studios.com/'] J4 Studios

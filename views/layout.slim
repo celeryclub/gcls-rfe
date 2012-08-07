@@ -4,32 +4,38 @@ html
     title #{get_title} - Recipe for Financial Empowerment
     link[rel='stylesheet' href='/css/normalize.css']
     link[rel='stylesheet' href='/css/screen.css']
-    / link[rel='shortcut icon' href='/favicon.png']
+    link[rel='shortcut icon' href='/favicon.png']
     script[src='/js/html5shiv.js']
     script[src='//use.typekit.net/cay7bya.js']
     javascript:
       try{Typekit.load();}catch(e){}
   body
-    .wrapper[class="#{home? ? 'home' : ''}"]
-      header.cf
-        .logos.cf: a[href='/']
-          .logo.gls: img[src='/img/gls-logo-small.png' width='179' height='113']
-          .logo.rfe: img[src='/img/rfe-logo-small.png' width='217' height='72']
-        .social
-      #main.cf
-        / p = home?
-        .primary: .primary-inner[class=page_class] == yield
-        .secondary.cf
-          nav.main: ul
-            - @pages.each_with_index do |page, i|
-              li[class="item-#{i+1} #{nav_class(page.slug)}"]: a[href==page.path]
-                = page.title
-                span.description = page.description
-          /   h3.widget-title On the internet
-          /   ul
-          /     li: a[href='http://twitter.com/stephendavis89/'] Twitter
-          /     li: a[href='http://github.com/stephendavis89'] GitHub
-          /     li: a[href='http://www.rdio.com/people/stephendavis89/'] Rdio
+    .wrapper
+      .upper-outer: .upper-middle: .upper-inner[class="#{is_current?('home') ? 'home' : ''}"]
+        header.cf
+          .logos.cf: a[href='/']
+            .logo.gls: img[src='/img/gls-logo-small.png' width='179' height='113']
+            .logo.rfe: img[src='/img/rfe-logo-small.png' width='217' height='72']
+          .social
+            a.facebook[href='#'] Facebook
+            a.twitter[href='#'] Twitter
+        #main.cf
+          / p = home?
+          .primary: .primary-inner[class=page_class] == yield
+          .secondary.cf
+            nav.main: ul
+              - count = 1
+              - @pages.each do |page|
+                - unless is_current?(page.slug)
+                  li[class="item-#{count}"]: a[href==page.path class="#{page.slug}"]
+                    = page.title
+                    span.description = page.description
+                  - count += 1
+            /   h3.widget-title On the internet
+            /   ul
+            /     li: a[href='http://twitter.com/stephendavis89/'] Twitter
+            /     li: a[href='http://github.com/stephendavis89'] GitHub
+            /     li: a[href='http://www.rdio.com/people/stephendavis89/'] Rdio
       footer
         .thanks
           .thanks-inner

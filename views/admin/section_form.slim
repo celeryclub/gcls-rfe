@@ -4,11 +4,9 @@
   h1.title New Section
 
 - if @section.errors.any?
-  div.errors
-    strong Errors
-    ul
-      - @section.errors.full_messages.each do |message|
-        li = message
+  .alert.alert-error: ul
+    - @link.errors.full_messages.each do |message|
+      li = message
 
 form[action=="#{@section.id ? '/admin/sections/' + @section.id.to_s : '/admin/sections'}" method='POST']
   .input.text

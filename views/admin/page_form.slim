@@ -1,11 +1,9 @@
 h1.title Edit Page
 
 - if @page.errors.any?
-  div.errors
-    strong Errors
-    ul
-      - @page.errors.full_messages.each do |message|
-        li = message
+  .alert.alert-error: ul
+    - @link.errors.full_messages.each do |message|
+      li = message
 
 form[action="/admin/pages/#{@page.id}" method='POST']
   .input.text

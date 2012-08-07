@@ -1,20 +1,30 @@
 require 'sinatra'
 require 'data_mapper'
+# require 'sinatra-flash'
+require 'sinatra/flash'
+# require 'rack-flash'
 require 'slim'
 require 'sass'
+require 'less'
 require 'coffee-script'
 # require 'rdiscount'
 
 
 # TODO
 # ----------------------------
-# Fix this: http://localhost:4567/mayaisthebomb.com
 # add "http" to links if it's not there
+# Style homepage
+# Style Multimedia page
+# Finish section filter JS
+# JS section collapse?
+# Add "all_but_home_and_contact" method for link assignment
 
 
 # Config
 # ----------------------------
+enable :sessions
 set :slim, :pretty => true
+Less.paths << settings.views
 before do
   @pages = Page.all_but_home(:fields => [:title, :slug, :description], :order => [:position.asc])
 end
@@ -58,7 +68,7 @@ class Section
   def next_position
     (last = Section.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1
   end
-  def fix_associations
+  # def fix_associations
 end
 
 class Link
@@ -119,7 +129,7 @@ helpers do
     end
   end
   def get_title
-    if defined?(@page)
+    if defined?(@page.title)
       @page.title
     elsif defined?(@title)
       @title
@@ -127,13 +137,19 @@ helpers do
       ''
     end
   end
-  def home?; request.path.split('/').length == 0 end
+  # def home?; request.path.split('/').length == 0 end
   def page_class; request.path.split('/')[1] end
-  def nav_class(uri)
-    segments = request.path.split('/')
-    if segments.include?(uri)
-      'current'
+  def is_current?(slug)
+  # def nav_class(uri)
+    if slug == 'home'
+      request.path.split('/').length == 0
+    else
+      request.path.split('/').include?(slug)
     end
+    # segments = request.path.split('/')
+    # if segments.include?(uri)
+      # 'current'
+    # end
   end
 end
 
@@ -141,6 +157,8 @@ end
 # Routes
 # ----------------------------
 get('/css/screen.css') { scss(:'assets/screen') }
+# get('/css/bootstrap-custom.css') { scss(:'assets/bootstrap/bootstrap') }
+get('/css/bootstrap-custom.css') { less(:'assets/bootstrap/bootstrap') }
 get('/css/admin.css') { scss(:'assets/admin') }
 get('/js/admin.js') { coffee(:'assets/admin') }
 
@@ -164,7 +182,7 @@ patch '/admin/pages/:id' do
   @page = Page.get(params[:id])
   @page.attributes = params[:page]
   if @page.save
-    # @notice = 'Page updated successfully'
+    flash[:alert] = 'Page updated successfully'
     redirect to('/admin')
   else
     slim :'admin/page_form', :layout => :'admin/layout'
@@ -186,6 +204,7 @@ post '/admin/sections' do
   protected!
   @section = Section.new(params[:section])
   if @section.save
+    flash[:alert] = 'Section created successfully'
     redirect to('/admin')
   else
     slim :'admin/section_form', :layout => :'admin/layout'
@@ -201,6 +220,7 @@ patch '/admin/sections/:id' do
   @section = Section.get(params[:id])
   @section.attributes = params[:section]
   if @section.save
+    flash[:alert] = 'Section updated successfully'
     redirect to('/admin')
   else
     slim :'admin/section_form', :layout => :'admin/layout'
@@ -209,6 +229,7 @@ end
 delete '/admin/sections/:id' do
   protected!
   Section.get(params[:id]).destroy
+  flash[:alert] = 'Section deleted successfully'
   redirect to('/admin')
 end
 put '/admin/sections/sort' do
@@ -227,6 +248,7 @@ post '/admin/links' do
   protected!
   @link = Link.new(params[:link])
   if @link.save
+    flash[:alert] = 'Link created successfully'
     redirect to('/admin')
   else
     slim :'admin/link_form', :layout => :'admin/layout'
@@ -242,6 +264,7 @@ patch '/admin/links/:id' do
   @link = Link.get(params[:id])
   @link.attributes = params[:link]
   if @link.save
+    flash[:alert] = 'Link updated successfully'
     redirect to('/admin')
   else
     slim :'admin/link_form', :layout => :'admin/layout'
@@ -250,6 +273,7 @@ end
 delete '/admin/links/:id' do
   protected!
   Link.get(params[:id]).destroy
+  flash[:alert] = 'Link deleted successfully'
   redirect to('/admin')
 end
 put '/admin/links/sort' do
@@ -264,12 +288,14 @@ get '/:slug' do
   pass if params[:slug] == 'home'
   if @page = Page.first(:slug => params[:slug])
     slim :page
+    # @page.inspect
   else
-    error 404
+    # error 404
+    halt 404
   end
 end
 
-error 404 do
-  @title = 'Not Found'
-  slim :'404'
-end
+# error 404 do
+#   @title = 'Not Found'
+#   slim :'404'
+# end

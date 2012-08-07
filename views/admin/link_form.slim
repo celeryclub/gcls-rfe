@@ -4,11 +4,9 @@
   h1.title New Link
 
 - if @link.errors.any?
-  div.errors
-    strong Errors
-    ul
-      - @link.errors.full_messages.each do |message|
-        li = message
+  .alert.alert-error: ul
+    - @link.errors.full_messages.each do |message|
+      li = message
 
 / p: strong = @link.page_id
 
@@ -38,9 +36,9 @@ form[action=="#{@link.id ? '/admin/links/' + @link.id.to_s : '/admin/links'}" me
       option[value=''] Select a section
       - Section.all(:order => [:position.asc]).each do |section|
         - if @link.section_id && section.id == @link.section_id
-          option[value=section.id selected] = section.title
+          option[value=section.id data-page-id=section.page_id selected] = section.title
         - else
-          option[value=section.id] = section.title
+          option[value=section.id data-page-id=section.page_id] = section.title
   - if @link.id
     input[type='hidden' name='_method' value='PATCH']
   .controls
