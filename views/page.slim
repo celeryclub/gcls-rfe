@@ -1,62 +1,13 @@
 h1.title = @page.title
 p = @page.body
 
-/ - unsectioned_links = @page.links.select { |link| !link.section_id }
-
 - if @page.sections.any?
   ul.sections
     - @page.sections.each do |section|
     	li.section
 	      h2.section-title = section.title
 	      == slim :link_set, :layout => false, :locals => { :links => section.links }
-	        / - section.links.each do |link|
-	          / p = link.text
   - if @page.unsectioned_links.any?
     == slim :link_set, :layout => false, :locals => { :links => @page.unsectioned_links }
 - else
-  / - if @page.links.any?
-  == slim :link_set, :layout => false, :locals => { :links => @page.links }
-
-
-/ ul.categories
-/   li.category
-/     a[href='#'] Getting out of debt
-/     ul.links
-/       li.link: a[href='#'] Credit Card Tools
-/       li.link: a[href='#'] How Much do you Owe? (calculator)
-/       li.link: a[href='#'] Personal Debt Consolidation Calculator
-/   li.category
-/     a[href='#'] Credit
-/     ul.links
-/       li.link: a[href='#'] link 1
-/       li.link: a[href='#'] link 2
-/   li.category
-/     a[href='#'] Investing
-/     ul.links
-/       li.link: a[href='#'] link 1
-/       li.link: a[href='#'] link 2
-/   li.category
-/     a[href='#'] Mortgages
-/     ul.links
-/       li.link: a[href='#'] link 1
-/       li.link: a[href='#'] link 2
-/   li.category
-/     a[href='#'] Saving for the kids
-/     ul.links
-/       li.link: a[href='#'] link 1
-/       li.link: a[href='#'] link 2
-/   li.category
-/     a[href='#'] Saving for retirement
-/     ul.links
-/       li.link: a[href='#'] link 1
-/       li.link: a[href='#'] link 2
-/   li.category
-/     a[href='#'] Spending how you feel
-/     ul.links
-/       li.link: a[href='#'] link 1
-/       li.link: a[href='#'] link 2
-/   li.category
-/     a[href='#'] Budgeting
-/     ul.links
-/       li.link: a[href='#'] link 1
-/       li.link: a[href='#'] link 2
+	== slim :link_set, :layout => false, :locals => { :links => @page.links }

@@ -9,18 +9,20 @@ html
     script[src='//use.typekit.net/cay7bya.js']
     javascript:
       try{Typekit.load();}catch(e){}
-  body
+  body[class="#{is_current?('home') ? 'home' : ''}"]
     .wrapper
-      .upper-outer: .upper-middle: .upper-inner[class="#{is_current?('home') ? 'home' : ''}"]
+      .upper-outer: .upper-middle: .upper-inner[class="#{defined?(@all_nav) ? 'all-nav' : ''}"]
         header.cf
           .logos.cf: a[href='/']
-            .logo.gls: img[src='/img/gls-logo-small.png' width='179' height='113']
-            .logo.rfe: img[src='/img/rfe-logo-small.png' width='217' height='72']
+            - if is_current?('home')
+              .logo.gls: img[src='/img/gls-logo-big.png' width='256' height='161']
+            - else
+              .logo.gls: img[src='/img/gls-logo-small.png' width='179' height='113']
+              .logo.rfe: img[src='/img/rfe-logo-small.png' width='217' height='72']
           .social
             a.facebook[href='#'] Facebook
             a.twitter[href='#'] Twitter
         #main.cf
-          / p = home?
           .primary: .primary-inner[class=page_class] == yield
           .secondary.cf
             nav.main: ul
@@ -31,11 +33,6 @@ html
                     = page.title
                     span.description = page.description
                   - count += 1
-            /   h3.widget-title On the internet
-            /   ul
-            /     li: a[href='http://twitter.com/stephendavis89/'] Twitter
-            /     li: a[href='http://github.com/stephendavis89'] GitHub
-            /     li: a[href='http://www.rdio.com/people/stephendavis89/'] Rdio
       footer
         .thanks
           .thanks-inner
@@ -47,7 +44,6 @@ html
             a.finra[href='http://www.finra.org/']: img[src='/img/finra-logo.png']
         .colophon
           .colophon-inner.cf
-            p.finra: small This website is made possible by a grant from the FINRA Investor Education Foundation through Smart investing@your library®, a partnership with the American Library Association.
             .copyright: p
               ' Copyright #{Time.now.strftime('%Y')}
               a[href='http://www.greenvillelibrary.org/'] Greenville Library System
@@ -55,3 +51,4 @@ html
             .credits: p
               ' Website by
               a[href='http://www.j4studios.com/'] J4 Studios.
+        .finra: p: small This website is made possible by a grant from the FINRA Investor Education Foundation through Smart investing@your library®, a partnership with the American Library Association.

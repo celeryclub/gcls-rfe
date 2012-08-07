@@ -1,13 +1,11 @@
 // Colors
 // --------------------------------
 $white: #FEFEFE;
-// $light_grey: #999;
-$grey: #999;
-$dark_grey: #333;
-$light_yellow: #FFF5D8;
-$medium_yellow: #ffebc5;
+$light_grey: #999;
+$grey: #666;
+$dark_grey: #111;
 $red: #CB0010;
-// $teal: #389C96;
+$dark_red: #890B15;
 $teal: #00A69D;
 
 // General
@@ -15,15 +13,15 @@ $teal: #00A69D;
 ::-moz-selection { background: rgba(0,166,157,.75); color: #fff; text-shadow: none; }
 ::selection { background: rgba(0,166,157,.75); color: #fff; text-shadow: none; }
 body {
-	background: $light_yellow;
-  color: $grey;
+  background: #FCE4B6 url("../img/brown-spots.jpg") center top;
+  color: $light_grey;
   font-family: "museo", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
   font-size: 16px;
   line-height: 1.2em;
 }
 h1, h2, h3, h4,
 nav.main a {
-	font-family: "museo-slab", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+  font-family: "museo-slab", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
 }
 h1, h2, h3, h4 {
   font-weight: 400;
@@ -31,37 +29,17 @@ h1, h2, h3, h4 {
   line-height: 1em;
   margin: .5em 0 0;
 }
-h1 {
-  font-size: 28px;
-
-//   margin: 0;
-}
-h2 {
-  // font-size: 32px;
-  font-size: 18px;
-//   line-height: 1.1em;
-}
-// h3 {
-//   font-size: 22px;
-//   font-family: "PT Sans Narrow", Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
-// }
-// h4 {
-//   font-weight: 700;
-//   font-size: 1em;
-// }
+h1 { font-size: 28px; }
+h2 { font-size: 18px; }
 p { margin: .6em 0; }
 ul {
   list-style: disc;
   margin: .8em 0;
   padding-left: 2.5em;
 }
-li {
-  line-height: 1.6em;
-}
+li { line-height: 1.6em; }
 ul ul { margin: .4em 0; }
-ul ul li {
-  line-height: 1.4em;
-}
+ul ul li { line-height: 1.4em; }
 a {
   color: $grey;
   &:hover { color: $dark_grey; }
@@ -69,7 +47,6 @@ a {
 
 // Positioning
 // --------------------------------
-.wrapper { background: url("../img/brown-spots.jpg") center top; }
 .upper-outer,
 .thanks-inner,
 .colophon-inner {
@@ -85,11 +62,6 @@ a {
   background: url("../img/big-ring.png") 0 top no-repeat;
   padding-left: 850px;
   margin-left: -850px;
-  &.home {
-    background: url("../img/big-ring-home.png") 0 top no-repeat;
-    padding-left: 650px;
-    margin-left: -650px;
-  }
 }
 .primary {
   width: 46%;
@@ -131,43 +103,23 @@ header {
 
 // Main
 // --------------------------------
-#main {
-  // position: relative;
-}
+#main { padding-bottom: 60px; }
 
 // Primary
 // --------------------------------
-.primary {
-  margin-top: -60px;
-}
+.primary { margin-top: -60px; }
 .primary-inner {
-	padding-left: 80px;
-	background-position: left top;
-	background-repeat: no-repeat;
-}
-.sections {
-  list-style: none;
-  padding-left: .75em;
-}
-.section { color: $teal; }
-.section .section-title:before {
-  content: '+ ';
-  font-size: .8em;
-  margin-right: .35em;
-  vertical-align: top;
-}
-.link { color: $grey; }
-.link-description {
-  // display: block;
+  padding-left: 80px;
+  background-position: left top;
+  background-repeat: no-repeat;
 }
 
 // Secondary
 // --------------------------------
 nav.main {
-  // padding-top: 32px;
-  // background: blue;
   font-size: 26px;
-  // line-height: 8px;
+  position: relative;
+  z-index: 100;
   padding: 14px 0 0 205px;
   margin-right: -50px;
   ul {
@@ -177,6 +129,7 @@ nav.main {
   li {
     background: url("../img/small-ring.png") left top no-repeat;
     height: 78px;
+    display: inline-block;
     &.item-1 { margin-left: -5px; }
     &.item-3 { margin: 1px 0 0 -10px; }
     &.item-4 { margin: -3px 0 0 -35px; }
@@ -190,15 +143,16 @@ nav.main {
     line-height: 20px;
     padding-top: 12px;
     padding-left: 55px;
-    // background: rgba(0,0,0,.2);
     .description {
-    	font-size: 16px;
-    	display: block;
-    	color: $grey;
+      font-size: 16px;
+      display: block;
+      color: $light_grey;
       line-height: 18px;
     }
-    &:hover,
-    &:hover .description { color: $dark_grey; }
+    &:hover {
+      color: $dark_red;
+      .description { color: $red; }
+    }
     &:hover { background-position: left -100px; }
     &.education {
       background-position: left -200px;
@@ -221,80 +175,123 @@ nav.main {
       &:hover { background-position: left -700px; }
     }
   }
-  // .current > a {
-  //   color: $grey;
-  // }
 }
 
 // Footer
 // --------------------------------
 footer {
-	color: $white;
-	a {
-		color: $medium_yellow;
+  a {
+    color: #FFEBC5;
     &:hover {
       color: $white;
       text-decoration: underline;
     }
-	}
-	.thanks {
-		background: #F4DAAE url("../img/stitched.jpg") center top repeat-x;
-		border-bottom: 1px solid #004F48;
-		height: 95px;
-		text-align: center;
-		a {
-			line-height: 95px;
-			// float: left;
-			display: inline-block;
-			// background: red;
-			padding: 0 20px;
-			img {
-				// display: block;
-				vertical-align: middle;
-				// background: blue;
-			}
-		}
-	}
-	.colophon {
-  	font-size: 14px;
-  	// clear: both;
-  	// margin: 2em 0;
-  	// background: #00A69D;
-  	background: $teal;
+  }
+  .thanks {
+    background: #F4DAAE url("../img/stitched.jpg") center top repeat-x;
+    border-bottom: 1px solid #004F48;
+    height: 95px;
+    text-align: center;
+    a {
+      line-height: 95px;
+      display: inline-block;
+      padding: 0 20px;
+      img { vertical-align: middle; }
+    }
+  }
+  .finra {
+    text-align: center;
+    color: $grey;
+  }
+  .colophon {
+    font-size: 14px;
+    color: $white;
+    background: $teal;
     a {
       text-decoration: none;
     }
-    .finra {
-      text-align: center;
+    .copyright,
+    .credits {
+      width: 50%;
+      float: left;
     }
-  	.copyright,
-  	.credits {
-  		width: 50%;
-  		float: left;
-  	}
-  	.copyright p {
-      padding-left: 15px;
-    }
-  	.credits {
-  		text-align: right;
+    .copyright p { padding-left: 15px; }
+    .credits {
+      text-align: right;
       p { padding-right: 15px; }
-  	}
-	}
+    }
+  }
 }
 
 // Home Page
 // --------------------------------
+.home {
+  .upper-inner {
+    background: url("../img/big-ring-home.png") 500px top no-repeat;
+    padding-left: 650px;
+    margin-left: -650px;
+  }
+  header { padding-top: 62px; }
+  .primary {
+    float: left;
+    width: 65%;
+    margin-top: 0;
+    .primary-inner { padding-left: 0; }
+  }
+  .copy {
+    padding-left: 8px;
+    padding-top: 10px;
+    width: 33%;
+    float: left;
+  }
+  .pie {
+    width: 58%;
+    margin-top: -60px;
+    float: right;
+    overflow: visible;
+  }
+  .secondary {
+    float: right;
+    width: 35%;
+  }
+  nav.main {
+    padding-top: 0;
+    padding-left: 46px;
+    margin-top: -85px;
+    margin-right: 0;
+    li {
+      &.item-1 { margin-left: -21px; }
+      &.item-3 { margin: 1px 0 0 4px; }
+      &.item-4 { margin: -1px 0 0 -7px; }
+      &.item-5 { margin: -2px 0 0 -28px; }
+      &.item-6 { margin: -8px 0 0 -65px; }
+    }
+  }
+}
 
 // Other Pages
 // --------------------------------
-.money-topics {
-	background-image: url("../img/money-topics.png");
+.money-topics { background-image: url("../img/money-topics.png"); }
+.education { background-image: url("../img/education.png"); }
+.how-do-i { background-image: url("../img/how-do-i.png"); }
+.sections {
+  list-style: none;
+  padding-left: .75em;
 }
-.education {
-  background-image: url("../img/education.png");
+.section { color: $teal; }
+.section .section-title:before {
+  content: '+ ';
+  font-size: .8em;
+  margin-right: .35em;
+  vertical-align: top;
 }
-.how-do-i {
-  background-image: url("../img/how-do-i.png");
+.link {
+  color: $grey;
+  .link-description {
+    color: $light_grey;
+    display: block;
+    line-height: 1.3em;
+  }
 }
 
 // Utility

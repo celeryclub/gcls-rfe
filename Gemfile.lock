@@ -7,7 +7,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.3.3)
-    commonjs (0.2.6)
     daemons (1.1.8)
     data_mapper (1.2.0)
       dm-aggregates (~> 1.2.0)
@@ -68,9 +67,6 @@ GEM
     fastercsv (1.5.5)
     json (1.7.4)
     json_pure (1.7.4)
-    less (2.2.1)
-      commonjs (~> 0.2.6)
-    libv8 (3.3.10.4)
     multi_json (1.3.6)
     mysql2 (0.3.11)
     pg (0.14.0)
@@ -90,8 +86,6 @@ GEM
       tilt (~> 1.3.3)
     stringex (1.4.0)
     temple (0.4.0)
-    therubyracer (0.10.1)
-      libv8 (~> 3.3.10)
     thin (1.4.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -107,7 +101,6 @@ DEPENDENCIES
   data_mapper
   dm-mysql-adapter
   dm-postgres-adapter
-  less
   mysql2
   pg
   rack-rewrite
@@ -115,5 +108,4 @@ DEPENDENCIES
   sinatra
   sinatra-flash
   slim
-  therubyracer
   thin

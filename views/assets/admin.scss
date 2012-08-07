@@ -1,8 +1,6 @@
 // General
 // --------------------------------
-h2, h3, h4 {
-  color: #666;
-}
+h2 { color: #666; }
 ul {
   margin-bottom: 0;
   list-style: square;
@@ -26,14 +24,14 @@ ul {
 
 // Bootstrap Modifications
 // --------------------------------
+.nav-list > li > a:hover { background: #EEE; }
 .navbar .nav > li > a { text-shadow: none; }
 .alert ul,
 .alert p { margin-bottom: 0; }
 .well {
   min-height: 0;
-  .btn {
-    margin-left: 5px;
-  }
+  margin-bottom: 10px;
+  .btn { margin-left: 5px; }
 }
 nav.well { padding: 10px 0; }
 .form-collapsed,
@@ -52,12 +50,13 @@ nav.well { padding: 10px 0; }
 }
 .form-actions .btn { margin-right: 5px; }
 .btn { font-weight: normal; }
+textarea { height: 14em; }
 
 // Sortable
 // --------------------------------
 .handle { cursor: move; }
 .ui-sortable-helper { opacity: .5; }
-.section { margin-bottom: 10px; }
+// .section { margin-bottom: 10px; }
 
 // Footer
 // --------------------------------

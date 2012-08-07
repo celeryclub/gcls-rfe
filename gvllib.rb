@@ -1,21 +1,17 @@
 require 'sinatra'
 require 'data_mapper'
-# require 'sinatra-flash'
 require 'sinatra/flash'
-# require 'rack-flash'
 require 'slim'
 require 'sass'
-require 'less'
+# require 'less'
 require 'coffee-script'
-# require 'rdiscount'
 
 
 # TODO
 # ----------------------------
-# add "http" to links if it's not there
-# Style homepage
-# Style Multimedia page
-# flatten bootstrap
+# fix scrolling on form pages?
+# Big icons per page
+# Redirects
 # Add "all_but_home_and_contact" method for link assignment
 
 
@@ -23,7 +19,6 @@ require 'coffee-script'
 # ----------------------------
 enable :sessions
 set :slim, :pretty => true
-Less.paths << settings.views
 before do
   @pages = Page.all_but_home(:fields => [:title, :slug, :description], :order => [:position.asc])
 end
@@ -64,10 +59,14 @@ class Section
   has n, :links, :order => [:position.asc], :constraint => :set_nil
   belongs_to :page
 
+  before :valid?, :fix_association_errors
+
   def next_position
     (last = Section.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1
   end
-  # def fix_associations
+  def fix_association_errors
+    if self.page_id.class == String then self.page_id = nil end
+  end
 end
 
 class Link
@@ -81,27 +80,28 @@ class Link
   belongs_to :page
   belongs_to :section, :required => false
 
-  before :valid?, :fix_associations
+  before :valid?, :fix_association_errors
 
-  # def url= new_username
-  #   super new_username.downcase
+  # def url= new_url
+  #   # super new_url.downcase
+  #   unless new_url =~ %r{^http:\/\/.*}
+  #     new_url = "http://#{new_url}"
+  #   end
+  #   super new_url
   # end
-  def text_or_url
-    (self.text && !self.text.empty?) ? self.text : self.url
+  def absolute_url
+    (self.url =~ %r{^http:\/\/.*}) ? self.url : "http://#{self.url}"
+  end
+  def text_or_absolute_url
+    (self.text && !self.text.empty?) ? self.text : self.absolute_url
   end
   def next_position
     (last = Link.first(:page_id => self.page_id, :order => [:position.desc])) ? last.position + 1 : 1
   end
-  def fix_associations
-    # self.section_id = self.section_id.to_i
-    # self.section_id = self.section_id.class == String ? nil : self.section_id
-    if self.section_id.class == String
-      self.section_id = nil
+  def fix_association_errors
+    [:page_id, :section_id].each do |property|
+      if self.send(property).class == String then self.send("#{property}=",nil) end
     end
-    if self.page_id.class == String
-      self.page_id = nil
-    end
-    # [self.page_id, self.section_id].each { |property| if property.class == String then property = nil end }
   end
 end
 
@@ -157,11 +157,12 @@ end
 # ----------------------------
 get('/css/screen.css') { scss(:'assets/screen') }
 # get('/css/bootstrap-custom.css') { scss(:'assets/bootstrap/bootstrap') }
-get('/css/bootstrap-custom.css') { less(:'assets/bootstrap/bootstrap') }
+# get('/css/bootstrap-custom.css') { less(:'assets/bootstrap/bootstrap') }
 get('/css/admin.css') { scss(:'assets/admin') }
 get('/js/admin.js') { coffee(:'assets/admin') }
 
 get '/' do
+  @all_nav = true
   @page = Page.first(:slug => 'home')
   slim :index
 end
@@ -289,12 +290,13 @@ get '/:slug' do
     slim :page
     # @page.inspect
   else
-    # error 404
-    halt 404
+    error 404
+    # halt 404
   end
 end
 
-# error 404 do
-#   @title = 'Not Found'
-#   slim :'404'
-# end
+error 404 do
+  @all_nav = true
+  @title = 'Not Found'
+  slim :'404'
+end

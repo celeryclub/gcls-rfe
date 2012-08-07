@@ -1,6 +1,16 @@
+/ - if @page.slug == 'multimedia'
+/   .videos
+/     - links.each do |link|
+/       .video
+/         h2.video-title = link.text
+/         p = link.description
+/         / iframe[width='320' height='240' src="#{link.url}?rel=0" frameborder='0' allowfullscreen]
+/         iframe[width='380' height='285' src="#{link.url}?rel=0" frameborder='0' allowfullscreen]
+
+/ - else
 ul.links
   - links.each do |link|
-    li.link: a[href==link.url target='_blank']
-      span.link-text = link.text_or_url
+    li.link
+      a[href==link.absolute_url target='_blank']: span.link-text = link.text_or_absolute_url
       - if link.description && !link.description.empty?
-        small.link-description = " (#{link.description})"
+        small.link-description = link.description
