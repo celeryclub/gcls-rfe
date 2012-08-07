@@ -12,7 +12,6 @@ require 'coffee-script'
 # fix scrolling on form pages?
 # Big icons per page
 # Redirects
-# Add "all_but_home_and_contact" method for link assignment
 
 
 # Config
@@ -20,7 +19,7 @@ require 'coffee-script'
 enable :sessions
 set :slim, :pretty => true
 before do
-  @pages = Page.all_but_home(:fields => [:title, :slug, :description], :order => [:position.asc])
+  @pages = Page.all(:slug.not => 'home', :fields => [:title, :slug, :description], :order => [:position.asc])
 end
 
 
@@ -42,8 +41,8 @@ class Page
   has n, :links, :order => [:position.asc]
 
   def path; "/#{self.slug}" end
-  def self.all_but_home(options = {})
-    self.all({:slug.not => 'home'}.merge(options))
+  def self.assignables(options = {})
+    self.all({:slug.not => ['home', 'connect']}.merge(options))
   end
   def unsectioned_links
     self.links.select { |link| !link.section_id }

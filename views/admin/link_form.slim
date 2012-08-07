@@ -22,7 +22,7 @@ form.link-form.form-horizontal[action=="#{@link.id ? '/admin/links/' + @link.id.
     label.control-label[for='page_id'] Page 
     .controls: select[name='link[page_id]' id='page_id']
       option[value=''] Select a page
-      - Page.all_but_home(:order => [:position.asc]).each do |page|
+      - Page.assignables(:order => [:position.asc]).each do |page|
         - if page.id == @link.page_id
           option[value=page.id selected] = page.title
         - else
