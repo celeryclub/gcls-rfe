@@ -25,7 +25,7 @@ end
 
 # Models
 # ----------------------------
-DataMapper.setup(:default, ENV['DATABASE_URL'] || 'mysql://root:@127.0.0.1/sinatra_gvllib')
+DataMapper.setup(:default, ENV['DATABASE_URL'] || 'mysql2://root:@127.0.0.1/sinatra_rfe')
 
 class Page
   include DataMapper::Resource
