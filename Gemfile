@@ -8,8 +8,6 @@ gem 'thin'
 gem 'sinatra-flash'
 gem 'slim'
 gem 'sass'
-# gem 'less'
-# gem 'therubyracer'
 gem 'coffee-script'
 gem 'rack-rewrite', :require => 'rack/rewrite'
 

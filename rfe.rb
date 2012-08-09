@@ -3,7 +3,6 @@ require 'data_mapper'
 require 'sinatra/flash'
 require 'slim'
 require 'sass'
-# require 'less'
 require 'coffee-script'
 
 
