@@ -1,6 +1,6 @@
 // General
 // --------------------------------
-h2 { color: #666; }
+h2, h3 { color: #666; }
 ul {
   margin-bottom: 0;
   list-style: square;
@@ -25,7 +25,7 @@ ul {
 // Bootstrap Modifications
 // --------------------------------
 .nav-list > li > a:hover { background: #EEE; }
-.navbar .nav > li > a { text-shadow: none; }
+// .navbar .nav > li > a { text-shadow: none; }
 .alert ul,
 .alert p { margin-bottom: 0; }
 .well {

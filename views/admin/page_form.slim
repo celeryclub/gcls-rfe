@@ -6,13 +6,13 @@ h1.title Edit Page
       li = message
 
 form.form-horizontal[action="/admin/pages/#{@page.id}" method='POST']
-  .control-group
+  .control-group[class="#{@page.errors.on(:title) ? 'error' : ''}"]
     label.control-label[for='title'] Title
     .controls: input.input-xlarge#title[type='text' name='page[title]' placeholder='Title' value="#{@page.title}"]
   .control-group
     label.control-label[for='description'] Description
     .controls: input.input-xlarge#description[type='text' name='page[description]' placeholder='Description' value="#{@page.description}"]
-  .control-group
+  .control-group[class="#{@page.errors.on(:body) ? 'error' : ''}"]
     label.control-label[for='body'] Body
     .controls: textarea.input-xlarge#body[name='page[body]' placeholder='Body'] = @page.body
   input[type='hidden' name='_method' value='PATCH']

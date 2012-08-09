@@ -12,6 +12,7 @@ require 'coffee-script'
 # fix scrolling on form pages?
 # Big icons per page
 # Redirects
+# Finish adding content
 
 
 # Config
@@ -155,7 +156,6 @@ end
 # Routes
 # ----------------------------
 get('/css/screen.css') { scss(:'assets/screen') }
-# get('/css/bootstrap-custom.css') { scss(:'assets/bootstrap/bootstrap') }
 # get('/css/bootstrap-custom.css') { less(:'assets/bootstrap/bootstrap') }
 get('/css/admin.css') { scss(:'assets/admin') }
 get('/js/admin.js') { coffee(:'assets/admin') }

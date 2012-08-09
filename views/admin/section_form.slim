@@ -9,10 +9,10 @@
       li = message
 
 form.form-horizontal[action=="#{@section.id ? '/admin/sections/' + @section.id.to_s : '/admin/sections'}" method='POST' class="#{@section.id ? 'form-collapsed' : ''}"]
-  .control-group
+  .control-group[class="#{@section.errors.on(:title) ? 'error' : ''}"]
     label.control-label[for='title'] Title
     .controls: input.input-xlarge#title[type='text' name='section[title]' placeholder='Title' value="#{@section.title}"]
-  .control-group
+  .control-group[class="#{@section.errors.on(:page_id) ? 'error' : ''}"]
     label.control-label[for='page_id'] Page 
     .controls: select#page_id[name='section[page_id]']
       option[value=''] Select a page

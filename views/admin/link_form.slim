@@ -12,13 +12,13 @@ form.link-form.form-horizontal[action=="#{@link.id ? '/admin/links/' + @link.id.
   .control-group
     label.control-label[for='text'] Text
     .controls: input.input-xlarge#text[type='text' name='link[text]' placeholder='Text' value="#{@link.text}"]
-  .control-group
+  .control-group[class="#{@link.errors.on(:url) ? 'error' : ''}"]
     label.control-label[for='url'] URL
     .controls: input.input-xlarge#url[type='text' name='link[url]' placeholder='URL' value="#{@link.url}"]
   .control-group
     label.control-label[for='description'] Description
     .controls: input.input-xlarge#description[type='text' name='link[description]' placeholder='Description' value="#{@link.description}"]
-  .control-group
+  .control-group[class="#{@link.errors.on(:page_id) ? 'error' : ''}"]
     label.control-label[for='page_id'] Page 
     .controls: select[name='link[page_id]' id='page_id']
       option[value=''] Select a page
