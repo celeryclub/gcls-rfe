@@ -6,7 +6,8 @@ $grey: #666;
 $dark_grey: #111;
 $red: #CB0010;
 $dark_red: #890B15;
-$teal: #00A69D;
+// $teal: #00A69D;
+$teal: #3CADB0;
 
 // General
 // --------------------------------
@@ -29,7 +30,11 @@ h1, h2, h3, h4 {
   line-height: 1em;
   margin: .5em 0 0;
 }
-h1 { font-size: 28px; }
+h1 {
+  font-size: 28px;
+  margin-top: 0;
+  padding-top: .5em;
+}
 h2 { font-size: 18px; }
 p { margin: .6em 0; }
 ul {
@@ -107,10 +112,11 @@ header {
 
 // Primary
 // --------------------------------
-.primary { margin-top: -60px; }
+.primary { margin-top: -70px; }
 .primary-inner {
-  padding-left: 80px;
-  background-position: left top;
+  padding: 10px 0 0 80px;
+  min-height: 100px;
+  background-position: left 2px;
   background-repeat: no-repeat;
 }
 
@@ -274,6 +280,9 @@ footer {
 .money-topics { background-image: url("../img/money-topics.png"); }
 .education { background-image: url("../img/education.png"); }
 .how-do-i { background-image: url("../img/how-do-i.png"); }
+.multimedia { background-image: url("../img/multimedia.png"); }
+.assistance { background-image: url("../img/assistance.png"); }
+.connect { background-image: url("../img/connect.png"); }
 .sections {
   list-style: none;
   padding-left: .75em;

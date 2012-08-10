@@ -9,9 +9,7 @@ require 'coffee-script'
 # TODO
 # ----------------------------
 # fix scrolling on form pages?
-# Big icons per page
 # Redirects
-# Finish adding content
 
 
 # Config
@@ -25,7 +23,7 @@ end
 
 # Models
 # ----------------------------
-DataMapper.setup(:default, ENV['DATABASE_URL'] || 'mysql2://root:@127.0.0.1/sinatra_rfe')
+DataMapper.setup(:default, ENV['DATABASE_URL'] || 'mysql://root:@127.0.0.1/sinatra_rfe')
 
 class Page
   include DataMapper::Resource
