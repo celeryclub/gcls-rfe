@@ -1,13 +1,27 @@
 h1.title = @page.title
 p = @page.body
 
-- if @page.sections.any?
-  ul.sections
-    - @page.sections.each do |section|
-    	li.section
-	      h2.section-title = section.title
-	      == slim :link_set, :layout => false, :locals => { :links => section.links }
-  - if @page.unsectioned_links.any?
-    == slim :link_set, :layout => false, :locals => { :links => @page.unsectioned_links }
+- if @page.slug == 'connect'
+  .branches
+    - @branches.each_with_index do |branch, i|
+      .branch[class="#{ i == 0 ? 'first' : '' }"]
+        h2.title.branch-title: a[href==branch.url target='_blank'] = branch.name
+        .address
+          - branch.address.each_line do |line|
+            span = line
+        p = branch.phone
+        p.highlight Hours of Operation
+        .hours
+          - branch.hours.each_line do |line|
+            span = line
 - else
-	== slim :link_set, :layout => false, :locals => { :links => @page.links }
+  - if @page.sections.any?
+    ul.sections
+      - @page.sections.each do |section|
+        li.section
+          h2.title.section-title = section.title
+          == slim :link_set, :layout => false, :locals => { :links => section.links }
+    - if @page.unsectioned_links.any?
+      == slim :link_set, :layout => false, :locals => { :links => @page.unsectioned_links }
+  - else
+    == slim :link_set, :layout => false, :locals => { :links => @page.links }

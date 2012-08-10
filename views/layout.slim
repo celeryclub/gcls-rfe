@@ -14,7 +14,7 @@ html
       .upper-outer: .upper-middle: .upper-inner[class="#{defined?(@all_nav) ? 'all-nav' : ''}"]
         header.cf
           .logos.cf: a[href='/']
-            - if is_current?('home')
+            - if defined?(@all_nav)
               .logo.gls: img[src='/img/gls-logo-big.png' width='256' height='161']
             - else
               .logo.gls: img[src='/img/gls-logo-small.png' width='179' height='113']

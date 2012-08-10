@@ -1,3 +1,6 @@
+# encoding: utf-8
+# the above is a fix for multiline entries with Structs
+
 require 'sinatra'
 require 'sinatra/flash'
 require 'data_mapper'
@@ -10,7 +13,6 @@ require 'coffee-script'
 # ----------------------------
 # fix scrolling on form pages?
 # Redirects
-# Contact page
 # Crop big-ring.png?
 
 
@@ -18,8 +20,22 @@ require 'coffee-script'
 # ----------------------------
 enable :sessions
 set :slim, :pretty => true
+Branch = Struct.new(:name, :url, :address, :phone, :hours)
 before do
   @pages = Page.all(:slug.not => 'home', :fields => [:title, :slug, :description], :order => [:position.asc])
+  @branches = [
+    Branch.new('Hughes Main Library', 'http://www.greenvillelibrary.org/index.php/Main.html', "25 Heritage Green Place\r\n Greenville, SC 29601-2034", '864-242-5000', "M-F 9:00A-9:00P\r\n Sat 9:00A-6:00P \r\nSun 2:00P-6:00P"),
+    Branch.new('Anderson Road (West Branch)', 'http://www.greenvillelibrary.org/index.php/Anderson-Road.html', "2625 Anderson Rd\r\n Greenville, SC 29611", '864-269-5210', "M-Th 9:00A-9:00P \r\nF-Sat 9:00A-6:00P"),
+    Branch.new('Augusta Road  (Ramsey Family Branch)', 'http://www.greenvillelibrary.org/index.php/Augusta-Road.html', "100 Lydia St\r\n Greenville, SC 29605", '864-277-0161', "M-Th 9:00A-9:00P \r\nF-Sat 9:00A-6:00P"),
+    Branch.new('Berea ( Sarah Dobey Jones Branch)', 'http://www.greenvillelibrary.org/index.php/Berea.html', "111 N. Hwy. 25 Byp\r\n Greenville, SC 29617", '864-246-1695', "M-Th 9:00A-9:00P \r\nF-Sat 9:00A-6:00P"),
+    Branch.new('Fountain Inn  (Kerry Ann Younts - Culp Branch)', 'http://www.greenvillelibrary.org/index.php/Fountain-Inn.html', "311 North Main St\r\n Fountain Inn, SC 29644", '864-862-2576', "M-Th 9:00A-9:00P \r\nF-Sat 9:00A-6:00P"),
+    Branch.new('Greer ( Jean M. Smith Branch)', 'http://www.greenvillelibrary.org/index.php/Greer.html', "505 Pennsylvania Ave\r\n Greer, SC 29650", '864-877-8722', "M-Th 9:00A-9:00P \r\nF-Sat 9:00A-6:00P"),
+    Branch.new('Mauldin  (W. Jack Greer Branch)', 'http://www.greenvillelibrary.org/index.php/Mauldin.html', "800 West Butler Rd\r\n Greenville, SC 29607", '864-277-7397', "M-Th 9:00A-9:00P \r\nF-Sat 9:00A-6:00P"),
+    Branch.new('Pelham Road  (F.W Symmes Branch)', 'http://www.greenvillelibrary.org/index.php/Pelham-Road.html', "1508 Pelham Rd\r\n Greenville, SC 29615", '864-288-6688', "M-Th 9:00A-9:00P \r\nF-Sat 9:00A-6:00P"),
+    Branch.new('Simpsonville  (Hendricks Branch)', 'http://www.greenvillelibrary.org/index.php/Simpsonville.html', "626 NE Main St\r\n Simpsonville, SC 29681", '864-963-9031', "M-Th 9:00A-9:00P \r\nF-Sat 9:00A-6:00P"),
+    Branch.new('Taylors ( Burdette Branch)', 'http://www.greenvillelibrary.org/index.php/Taylors.html', "316 W. Main St\r\n Taylors, SC 29687", '864-268-5955', "M-Th 9:00A-9:00P \r\nF-Sat 9:00A-6:00P"),
+    Branch.new('Travelers Rest ( Sargent Branch)', 'http://www.greenvillelibrary.org/index.php/Travelers-Rest.html', "17 Center St\r\n Travelers Rest, SC 29690", '864-834-3650', "M-Th 9:00A-9:00P \r\nF-Sat 9:00A-6:00P")
+  ]
 end
 
 

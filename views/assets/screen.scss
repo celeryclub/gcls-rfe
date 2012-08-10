@@ -24,7 +24,7 @@ h1, h2, h3, h4,
 nav.main a {
   font-family: "museo-slab", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
 }
-h1, h2, h3, h4 {
+h1, h2, h2 a, h3, h4 {
   font-weight: 400;
   color: $teal;
   line-height: 1em;
@@ -67,14 +67,29 @@ a {
   background: url("../img/big-ring.png") 0 top no-repeat;
   padding-left: 850px;
   margin-left: -850px;
+  &.all-nav {
+    background: url("../img/big-ring-home.png") 500px top no-repeat;
+    padding-left: 650px;
+    margin-left: -650px;
+  }
 }
 .primary {
   width: 46%;
   float: right;
 }
+.all-nav .primary {
+  float: left;
+  width: 65%;
+  margin-top: 0;
+  .primary-inner { padding-left: 0; }
+}
 .secondary {
   float: left;
   width: 54%;
+}
+.all-nav .secondary {
+  float: right;
+  width: 35%;
 }
 
 // Header
@@ -104,6 +119,10 @@ header {
       }
     }
   }
+}
+.all-nav header {
+  padding-top: 62px;
+  .logo.rfe { display: none; }
 }
 
 // Main
@@ -182,6 +201,19 @@ nav.main {
     }
   }
 }
+.all-nav nav.main {
+  padding-top: 0;
+  padding-left: 46px;
+  margin-top: -85px;
+  margin-right: 0;
+  li {
+    &.item-1 { margin-left: -21px; }
+    &.item-3 { margin: 1px 0 0 4px; }
+    &.item-4 { margin: -1px 0 0 -7px; }
+    &.item-5 { margin: -2px 0 0 -28px; }
+    &.item-6 { margin: -8px 0 0 -65px; }
+  }
+}
 
 // Footer
 // --------------------------------
@@ -231,58 +263,28 @@ footer {
 
 // Home Page
 // --------------------------------
+.all-nav .copy {
+  padding-left: 8px;
+  padding-top: 10px;
+  width: 33%;
+  float: left;
+}
 .home {
-  .upper-inner {
-    background: url("../img/big-ring-home.png") 500px top no-repeat;
-    padding-left: 650px;
-    margin-left: -650px;
-  }
-  header { padding-top: 62px; }
-  .primary {
-    float: left;
-    width: 65%;
-    margin-top: 0;
-    .primary-inner { padding-left: 0; }
-  }
-  .copy {
-    padding-left: 8px;
-    padding-top: 10px;
-    width: 33%;
-    float: left;
-  }
   .pie {
     width: 58%;
     margin-top: -60px;
     float: right;
     overflow: visible;
   }
-  .secondary {
-    float: right;
-    width: 35%;
-  }
-  nav.main {
-    padding-top: 0;
-    padding-left: 46px;
-    margin-top: -85px;
-    margin-right: 0;
-    li {
-      &.item-1 { margin-left: -21px; }
-      &.item-3 { margin: 1px 0 0 4px; }
-      &.item-4 { margin: -1px 0 0 -7px; }
-      &.item-5 { margin: -2px 0 0 -28px; }
-      &.item-6 { margin: -8px 0 0 -65px; }
-    }
-  }
 }
 
-// Other Pages
+// Link Pages
 // --------------------------------
 .money-topics { background-image: url("../img/money-topics.png"); }
 .education { background-image: url("../img/education.png"); }
 .how-do-i { background-image: url("../img/how-do-i.png"); }
 .multimedia { background-image: url("../img/multimedia.png"); }
 .assistance { background-image: url("../img/assistance.png"); }
-.connect { background-image: url("../img/connect.png"); }
 .sections {
   list-style: none;
   padding-left: .75em;
@@ -303,8 +305,28 @@ footer {
   }
 }
 
+// Connect Page
+// --------------------------------
+.connect {
+  background-image: url("../img/connect.png");
+  .branch {
+    border-top: 1px dashed $teal;
+    margin-bottom: 10px;
+    p {
+      margin: 0;
+      &.highlight{ margin-top: .6em; }
+    }
+    span { display: block; }
+    &.first {
+      border: none;
+      padding-top: 0;
+    }
+  }
+}
+
 // Utility
 // --------------------------------
+.highlight { color: $grey; }
 .cf:before,
 .cf:after { content: ""; display: table; }
 .cf:after { clear: both; }
