@@ -1,6 +1,6 @@
 require 'sinatra'
-require 'data_mapper'
 require 'sinatra/flash'
+require 'data_mapper'
 require 'slim'
 require 'sass'
 require 'coffee-script'
@@ -10,6 +10,8 @@ require 'coffee-script'
 # ----------------------------
 # fix scrolling on form pages?
 # Redirects
+# Contact page
+# Crop big-ring.png?
 
 
 # Config

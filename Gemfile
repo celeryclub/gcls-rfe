@@ -2,14 +2,15 @@ source :rubygems
 
 ruby '1.9.3'
 
-gem 'sinatra'
-gem 'data_mapper'
+gem 'rack-rewrite'
 gem 'thin'
+
+gem 'sinatra'
 gem 'sinatra-flash'
+gem 'data_mapper'
 gem 'slim'
 gem 'sass'
 gem 'coffee-script'
-gem 'rack-rewrite', :require => 'rack/rewrite'
 
 group :production do
   gem 'pg'

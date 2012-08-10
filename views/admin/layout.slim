@@ -7,9 +7,6 @@ html
     link[rel='stylesheet' href='/css/admin.css']
     link[rel='shortcut icon' href='/favicon.png']
     script[src='/js/html5shiv.js']
-    / script[src='//use.typekit.net/cay7bya.js']
-    / javascript:
-      / try{Typekit.load();}catch(e){}
   body.admin
     .wrapper
       header
@@ -26,7 +23,6 @@ html
           == yield
         .secondary
           nav.well: ul.nav.nav-list
-            / li.nav-header Links
             li: a[href='/admin'] Dashboard
             li.divider
             li: a[href='/admin/sections/new'] New Section
