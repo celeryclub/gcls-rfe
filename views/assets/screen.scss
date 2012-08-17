@@ -52,11 +52,15 @@ a {
 
 // Positioning
 // --------------------------------
+// .wrapper {}
 .upper-outer,
 .thanks-inner,
-.colophon-inner {
+.colophon-inner,
+.finra-credit {
   width: 1000px;
+  padding: 0 15px;
   margin: 0 auto;
+  background: red;
 }
 .upper-middle {
   background: url("../img/white-glow.png") 0 top no-repeat;
@@ -237,7 +241,7 @@ footer {
       img { vertical-align: middle; }
     }
   }
-  .finra {
+  .finra-credit {
     text-align: center;
     color: $grey;
   }
@@ -245,9 +249,7 @@ footer {
     font-size: 14px;
     color: $white;
     background: $teal;
-    a {
-      text-decoration: none;
-    }
+    a { text-decoration: none; }
     .copyright,
     .credits {
       width: 50%;

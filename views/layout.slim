@@ -2,6 +2,7 @@ doctype html
 html
   head
     title #{get_title} - Recipe for Financial Empowerment
+    meta[name='viewport' content='width=1030']
     link[rel='stylesheet' href='/css/normalize.css']
     link[rel='stylesheet' href='/css/screen.css']
     link[rel='shortcut icon' href='/favicon.png']
@@ -13,12 +14,12 @@ html
     .wrapper
       .upper-outer: .upper-middle: .upper-inner[class="#{defined?(@all_nav) ? 'all-nav' : ''}"]
         header.cf
-          .logos.cf: a[href='/']
+          .logos.cf
             - if defined?(@all_nav)
-              .logo.gls: img[src='/img/gls-logo-big.png' width='256' height='161']
+              .logo.gls: a[href='http://www.greenvillelibrary.org/' target='_blank']: img[src='/img/gls-logo-big.png' width='256' height='161']
             - else
-              .logo.gls: img[src='/img/gls-logo-small.png' width='179' height='113']
-              .logo.rfe: img[src='/img/rfe-logo-small.png' width='217' height='72']
+              .logo.gls: a[href='http://www.greenvillelibrary.org/' target='_blank']: img[src='/img/gls-logo-small.png' width='179' height='113']
+              .logo.rfe: a[href='/']: img[src='/img/rfe-logo-small.png' width='217' height='72']
           .social
             a.facebook[href='http://www.facebook.com/greenvillelibrary' target='_blank'] Facebook
             a.twitter[href='http://twitter.com/GCLSLibrary' target='_blank'] Twitter
@@ -51,4 +52,4 @@ html
             .credits: p
               ' Website by
               a[href='http://www.j4studios.com/'] J4 Studios.
-        .finra: p: small This website is made possible by a grant from the FINRA Investor Education Foundation through Smart investing@your library®, a partnership with the American Library Association.
+        .finra-credit: p: small This website is made possible by a grant from the FINRA Investor Education Foundation through Smart investing@your library®, a partnership with the American Library Association.
